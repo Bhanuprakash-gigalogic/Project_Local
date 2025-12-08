@@ -27,6 +27,27 @@ const CMSHome = () => {
     const { mutate: createBanner, isPending: isCreatingBanner } = useCreateBanner();
 
     // Local State for new Banner
+    const [isBannerModalOpen, setIsBannerModalOpen] = useState(false);
+    const [newBannerTitle, setNewBannerTitle] = useState('');
+
+    const handleSaveHome = () => {
+        if (!homeConfig) return;
+        updateHome(homeConfig, {
+            onSuccess: () => addToast({ title: "Settings Saved", description: "", type: "success" })
+        });
+    };
+
+    const handleCreateBanner = () => {
+        if (!newBannerTitle) return;
+        createBanner({ title: newBannerTitle }, {
+            onSuccess: () => {
+                addToast({ title: "Banner Created", description: "", type: "success" });
+                setIsBannerModalOpen(false);
+                setNewBannerTitle('');
+            }
+        });
+    };
+
     return (
         <div className="space-y-6 max-w-6xl mx-auto animate-in fade-in">
             <div className="flex flex-col gap-2">
@@ -66,7 +87,6 @@ const CMSHome = () => {
                                         <div className="flex items-center gap-4">
                                             <span className="text-sm text-muted-foreground">{section.isEnabled ? 'Enabled' : 'Disabled'}</span>
                                             <Toggle checked={section.isEnabled} onCheckedChange={() => { }} />
-                                            {/* Note: In real app, toggle would update local state before save */}
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -109,7 +129,7 @@ const CMSHome = () => {
                                 <CategoryLandingCard
                                     key={c.id}
                                     category={c}
-                                    onClick={(id) => addToast({ title: "Config Opened", description: `Editing ${id}` })}
+                                    onClick={(id) => addToast({ title: "Config Opened", description: `Editing ${id}`, type: "success" })}
                                 />
                             ))}
                         </div>
