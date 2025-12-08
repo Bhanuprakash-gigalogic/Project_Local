@@ -2,9 +2,7 @@ import React from 'react';
 import { SellerApplication } from '../types/seller';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
 import { ChevronRight, Calendar, MapPin } from 'lucide-react';
-import { Avatar } from '@/components/ui/Avatar'; // We don't have Avatar yet, will use img fallback or create simple one
 
 interface SellerCardProps {
     application: SellerApplication;
