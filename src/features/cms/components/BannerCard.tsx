@@ -23,19 +23,6 @@ export const BannerCard = ({ banner }: BannerCardProps) => {
         publish({ id: banner.id, status: newStatus }, {
             onSuccess: () => addToast({ title: `Banner ${newStatus === 'live' ? 'Published' : 'Unpublished'}`, type: "success" })
         });
-    };
-
-    const handleDelete = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        if (confirm('Are you sure you want to delete this banner?')) {
-            deleteBanner(banner.id, {
-                onSuccess: () => addToast({ title: "Banner Deleted", type: "success" })
-            });
-        }
-    };
-
-    return (
-        <Card className="group overflow-hidden border hover:border-primary/50 transition-all">
             <div className="relative h-32 w-full bg-muted/20">
                 <img
                     src={banner.imageUrl}
@@ -58,6 +45,6 @@ export const BannerCard = ({ banner }: BannerCardProps) => {
                 </div>
                 <p className="text-xs text-muted-foreground truncate">{banner.linkUrl}</p>
             </CardContent>
-        </Card>
+        </Card >
     );
 };

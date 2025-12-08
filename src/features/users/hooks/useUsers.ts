@@ -59,7 +59,7 @@ export const useGetUsers = (filter: UserFilter) => {
     return useQuery({
         queryKey: ['users', filter],
         queryFn: () => fetchUsers(filter),
-        keepPreviousData: true,
+        placeholderData: (previousData) => previousData,
     });
 };
 

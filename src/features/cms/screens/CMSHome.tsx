@@ -27,27 +27,6 @@ const CMSHome = () => {
     const { mutate: createBanner, isPending: isCreatingBanner } = useCreateBanner();
 
     // Local State for new Banner
-    const [isBannerModalOpen, setIsBannerModalOpen] = useState(false);
-    const [newBannerTitle, setNewBannerTitle] = useState('');
-
-    const handleSaveHome = () => {
-        if (!homeConfig) return;
-        updateHome(homeConfig, {
-            onSuccess: () => addToast({ title: "Home Config Saved", type: "success" })
-        });
-    };
-
-    const handleCreateBanner = () => {
-        if (!newBannerTitle) return;
-        createBanner({ title: newBannerTitle }, {
-            onSuccess: () => {
-                addToast({ title: "Banner Created", type: "success" });
-                setIsBannerModalOpen(false);
-                setNewBannerTitle('');
-            }
-        });
-    };
-
     return (
         <div className="space-y-6 max-w-6xl mx-auto animate-in fade-in">
             <div className="flex flex-col gap-2">
