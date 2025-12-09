@@ -31,7 +31,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                     type="search"
-                    className={cn("pl-9", className)}
+                    className={cn("pl-9 bg-white", className)}
                     ref={ref}
                     value={value}
                     onChange={handleChange}

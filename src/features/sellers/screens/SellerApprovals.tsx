@@ -64,18 +64,18 @@ const SellerApprovals = () => {
             </div>
 
             {/* Filter Bar */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sticky top-16 bg-muted/40 p-1 backdrop-blur-sm z-10 rounded-lg">
-                <Tabs value={status} onValueChange={handleTabChange} className="w-full sm:w-auto">
-                    <TabsList>
-                        <TabsTrigger value="pending" className="px-6">Pending</TabsTrigger>
-                        <TabsTrigger value="approved" className="px-6">Approved</TabsTrigger>
-                        <TabsTrigger value="rejected" className="px-6">Rejected</TabsTrigger>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-background/50 p-3 backdrop-blur-sm rounded-lg border">
+                <Tabs value={status} onValueChange={handleTabChange} className="w-full sm:w-auto overflow-x-auto">
+                    <TabsList className="w-full sm:w-auto inline-flex">
+                        <TabsTrigger value="pending" className="flex-1 sm:flex-none sm:px-6">Pending</TabsTrigger>
+                        <TabsTrigger value="approved" className="flex-1 sm:flex-none sm:px-6">Approved</TabsTrigger>
+                        <TabsTrigger value="rejected" className="flex-1 sm:flex-none sm:px-6">Rejected</TabsTrigger>
                     </TabsList>
                 </Tabs>
                 <SearchInput
                     placeholder="Search applicant or business..."
                     onSearch={(val) => { setSearch(val); setPage(1); }}
-                    className="w-full sm:w-[320px] bg-background"
+                    className="w-full sm:w-[320px] bg-white"
                 />
             </div>
 

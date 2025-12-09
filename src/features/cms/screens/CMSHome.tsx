@@ -55,13 +55,15 @@ const CMSHome = () => {
                 <p className="text-muted-foreground">Manage homepage layout, banners, and landing pages.</p>
             </div>
 
-            <Tabs defaultValue="home">
-                <TabsList className="mb-6">
-                    <TabsTrigger value="home">Home Config</TabsTrigger>
-                    <TabsTrigger value="banners">Banners</TabsTrigger>
-                    <TabsTrigger value="categories">Categories</TabsTrigger>
-                    <TabsTrigger value="settings">Settings</TabsTrigger>
-                </TabsList>
+            <Tabs defaultValue="home" className="w-full">
+                <div className="overflow-x-auto mb-6">
+                    <TabsList className="inline-flex w-full sm:w-auto">
+                        <TabsTrigger value="home" className="flex-1 sm:flex-none whitespace-nowrap">Home Config</TabsTrigger>
+                        <TabsTrigger value="banners" className="flex-1 sm:flex-none whitespace-nowrap">Banners</TabsTrigger>
+                        <TabsTrigger value="categories" className="flex-1 sm:flex-none whitespace-nowrap">Categories</TabsTrigger>
+                        <TabsTrigger value="settings" className="flex-1 sm:flex-none whitespace-nowrap">Settings</TabsTrigger>
+                    </TabsList>
+                </div>
 
                 {/* Home Config Tab */}
                 <TabsContent value="home" className="space-y-6">
