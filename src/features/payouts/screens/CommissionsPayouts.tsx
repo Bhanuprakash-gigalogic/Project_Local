@@ -46,12 +46,10 @@ const CommissionsPayouts = () => {
             {/* Main Content Tabs */}
             <div className="mt-8">
                 <Tabs defaultValue="history" className="w-full">
-                    <div className="overflow-x-auto mb-6">
-                        <TabsList className="inline-flex w-full sm:w-auto">
-                            <TabsTrigger value="history" className="flex-1 sm:flex-none sm:px-8 whitespace-nowrap">Payout History</TabsTrigger>
-                            <TabsTrigger value="settings" className="flex-1 sm:flex-none sm:px-8 whitespace-nowrap">Commission Settings</TabsTrigger>
-                        </TabsList>
-                    </div>
+                    <TabsList className="mb-6">
+                        <TabsTrigger value="history">Payout History</TabsTrigger>
+                        <TabsTrigger value="settings">Commission Settings</TabsTrigger>
+                    </TabsList>
 
                     <TabsContent value="history">
                         <PayoutHistory />

@@ -36,14 +36,14 @@ export const SellerCard = ({ application, onClick }: SellerCardProps) => {
                     <p className="text-sm text-muted-foreground truncate mb-1">
                         {application.applicantName} • {application.businessType}
                     </p>
-                    <div className="flex items-center text-xs text-muted-foreground gap-3">
+                    <div className="flex flex-wrap items-center text-xs text-muted-foreground gap-3">
                         <div className="flex items-center gap-1">
                             <Calendar size={12} />
                             <span>{new Date(application.submittedAt).toLocaleDateString()}</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                            <MapPin size={12} />
-                            <span className="truncate max-w-[150px]">{application.address.city}, {application.address.state}</span>
+                        <div className="flex items-center gap-1 min-w-0">
+                            <MapPin size={12} className="flex-shrink-0" />
+                            <span className="truncate">{application.address.city}, {application.address.state}</span>
                         </div>
                     </div>
                     {/* Mobile Badge */}

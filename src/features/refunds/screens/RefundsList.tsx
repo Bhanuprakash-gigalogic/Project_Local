@@ -50,8 +50,8 @@ const RefundsList = () => {
                 <p className="text-muted-foreground">Manage refund requests and process potential returns.</p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sticky top-16 bg-muted/40 p-2 backdrop-blur-sm z-10 rounded-lg">
-                <Tabs value={status} onValueChange={(v) => setStatus(v as RefundStatus)} className="w-full sm:w-auto">
+            <div className="p-4 border-b flex flex-col md:flex-row items-center justify-between gap-4 bg-card">
+                <Tabs value={status} onValueChange={(v) => setStatus(v as RefundStatus)} className="w-full md:w-auto">
                     <TabsList>
                         <TabsTrigger value="all">All</TabsTrigger>
                         <TabsTrigger value="pending">Pending</TabsTrigger>
@@ -62,7 +62,7 @@ const RefundsList = () => {
                 <SearchInput
                     placeholder="Search refund ID, order, or customer..."
                     onSearch={setSearch}
-                    className="w-full sm:w-[300px] bg-background"
+                    className="w-full md:w-[300px]"
                 />
             </div>
 
