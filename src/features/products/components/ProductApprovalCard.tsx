@@ -35,11 +35,12 @@ export const ProductApprovalCard = ({ product, onClick }: ProductApprovalCardPro
                         <Badge variant={statusVariant} className="capitalize hidden sm:inline-flex">{product.status}</Badge>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row sm:items-center text-sm text-muted-foreground sm:gap-4">
-                        <span className="flex items-center gap-1 truncate">
-                            <Store size={12} /> {product.seller.businessName}
+                    <div className="flex flex-wrap items-center text-xs sm:text-sm text-muted-foreground gap-x-2 gap-y-1">
+                        <span className="flex items-center gap-1 truncate max-w-[120px] sm:max-w-none">
+                            <Store size={12} className="flex-shrink-0" />
+                            <span className="truncate">{product.seller.businessName}</span>
                         </span>
-                        <span className="flex items-center gap-1 hidden sm:flex">
+                        <span className="hidden sm:flex items-center gap-1">
                             <Calendar size={12} /> {new Date(product.submittedAt).toLocaleDateString()}
                         </span>
                         <span className="font-medium text-foreground">

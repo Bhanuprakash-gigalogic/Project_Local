@@ -61,12 +61,12 @@ const ProductApprovals = () => {
             </div>
 
             {/* Filter Bar */}
-            <div className="p-4 border-b flex flex-col md:flex-row items-center justify-between gap-4 bg-card">
+            <div className="p-3 md:p-4 border-b flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 md:gap-4 bg-card">
                 <Tabs value={status} onValueChange={handleTabChange} className="w-full md:w-auto">
-                    <TabsList>
-                        <TabsTrigger value="pending">Pending</TabsTrigger>
-                        <TabsTrigger value="active">Approved</TabsTrigger>
-                        <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                    <TabsList className="grid grid-cols-3 w-full md:w-auto md:inline-flex">
+                        <TabsTrigger value="pending" className="text-xs md:text-sm">Pending</TabsTrigger>
+                        <TabsTrigger value="active" className="text-xs md:text-sm">Approved</TabsTrigger>
+                        <TabsTrigger value="rejected" className="text-xs md:text-sm">Rejected</TabsTrigger>
                     </TabsList>
                 </Tabs>
                 <SearchInput
