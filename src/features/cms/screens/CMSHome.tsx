@@ -57,7 +57,7 @@ const CMSHome = () => {
 
             <Tabs defaultValue="home" className="w-full">
                 <TabsList className="mb-6 grid grid-cols-4 w-full md:w-auto md:inline-flex gap-2">
-                    <TabsTrigger value="home" className="text-xs md:text-sm justify-center">Home Config</TabsTrigger>
+                    <TabsTrigger value="home" className="text-xs md:text-sm justify-center">Home</TabsTrigger>
                     <TabsTrigger value="banners" className="text-xs md:text-sm justify-center">Banners</TabsTrigger>
                     <TabsTrigger value="categories" className="text-xs md:text-sm justify-center">Categories</TabsTrigger>
                     <TabsTrigger value="settings" className="text-xs md:text-sm justify-center">Settings</TabsTrigger>
