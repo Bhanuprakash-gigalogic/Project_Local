@@ -96,9 +96,9 @@ export const RefundDetail = ({ refund, onBack }: RefundDetailProps) => {
                             </div>
                             <div>
                                 <h4 className="font-semibold text-sm mb-2">Evidence</h4>
-                                <div className="flex gap-2 bg-secondary/50 p-2 rounded-lg">
+                                <div className="flex flex-wrap gap-2 bg-secondary/50 p-2 rounded-lg">
                                     {refund.images.map((img, i) => (
-                                        <img key={i} src={img} alt="Evidence" className="h-24 w-24 object-cover rounded-md border" />
+                                        <img key={i} src={img} alt={`Evidence ${i + 1}`} className="h-20 w-20 sm:h-24 sm:w-24 object-cover rounded-md border flex-shrink-0" />
                                     ))}
                                 </div>
                             </div>

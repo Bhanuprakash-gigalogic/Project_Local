@@ -50,13 +50,13 @@ const RefundsList = () => {
                 <p className="text-muted-foreground">Manage refund requests and process potential returns.</p>
             </div>
 
-            <div className="p-4 border-b flex flex-col md:flex-row items-center justify-between gap-4 bg-card">
+            <div className="p-3 md:p-4 border-b flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 md:gap-4 bg-card">
                 <Tabs value={status} onValueChange={(v) => setStatus(v as RefundStatus)} className="w-full md:w-auto">
-                    <TabsList>
-                        <TabsTrigger value="all">All</TabsTrigger>
-                        <TabsTrigger value="pending">Pending</TabsTrigger>
-                        <TabsTrigger value="approved">Approved</TabsTrigger>
-                        <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                    <TabsList className="grid grid-cols-4 w-full md:w-auto md:inline-flex">
+                        <TabsTrigger value="all" className="text-xs md:text-sm">All</TabsTrigger>
+                        <TabsTrigger value="pending" className="text-xs md:text-sm">Pending</TabsTrigger>
+                        <TabsTrigger value="approved" className="text-xs md:text-sm">Approved</TabsTrigger>
+                        <TabsTrigger value="rejected" className="text-xs md:text-sm">Rejected</TabsTrigger>
                     </TabsList>
                 </Tabs>
                 <SearchInput
