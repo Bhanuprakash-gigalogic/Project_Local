@@ -97,12 +97,13 @@ const RolePermissions = () => {
 
             {/* Permissions Grid */}
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <CardTitle>Module Permissions</CardTitle>
                     <Button
                         onClick={handleSave}
                         disabled={!isDirty}
                         isLoading={isPending}
+                        className="w-full sm:w-auto"
                     >
                         <Save className="mr-2 h-4 w-4" /> Save Changes
                     </Button>
