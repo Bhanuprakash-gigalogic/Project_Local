@@ -52,25 +52,25 @@ export const ProductApprovalDetail = ({ product, onBack }: ProductApprovalDetail
         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
 
             {/* Navigation / Header */}
-            <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" onClick={onBack}>
+            <div className="flex items-start gap-2 sm:gap-4">
+                <Button variant="ghost" size="icon" onClick={onBack} className="flex-shrink-0">
                     <ChevronLeft className="h-5 w-5" />
                 </Button>
-                <div>
-                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight truncate max-w-[300px] sm:max-w-xl" title={product.title}>
+                <div className="flex-1 min-w-0">
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight truncate" title={product.title}>
                         {product.title}
                     </h2>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span>SKU: {product.variants[0]?.sku || 'N/A'}</span>
-                        <span>•</span>
-                        <span className="capitalize">{product.category}</span>
-                        <span>•</span>
-                        <span>{product.brand}</span>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-muted-foreground">
+                        <span className="truncate max-w-[100px] sm:max-w-none">SKU: {product.variants[0]?.sku || 'N/A'}</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span className="capitalize truncate">{product.category}</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span className="truncate">{product.brand}</span>
                     </div>
                 </div>
-                <div className="ml-auto flex flex-col items-end">
-                    <Badge variant={statusVariant} className="uppercase mb-1">{product.status}</Badge>
-                    <div className="text-sm font-semibold">${product.price.toFixed(2)}</div>
+                <div className="flex flex-col items-end flex-shrink-0">
+                    <Badge variant={statusVariant} className="uppercase mb-1 text-xs">{product.status}</Badge>
+                    <div className="text-sm font-semibold whitespace-nowrap">${product.price.toFixed(2)}</div>
                 </div>
             </div>
 
