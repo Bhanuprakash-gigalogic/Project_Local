@@ -46,9 +46,9 @@ const CommissionsPayouts = () => {
             {/* Main Content Tabs */}
             <div className="mt-8">
                 <Tabs defaultValue="history" className="w-full">
-                    <TabsList className="mb-6">
-                        <TabsTrigger value="history">Payout History</TabsTrigger>
-                        <TabsTrigger value="settings">Commission Settings</TabsTrigger>
+                    <TabsList className="mb-6 grid grid-cols-2 w-full md:w-auto md:inline-flex gap-2">
+                        <TabsTrigger value="history" className="text-xs md:text-sm justify-center">Payout History</TabsTrigger>
+                        <TabsTrigger value="settings" className="text-xs md:text-sm justify-center">Commission Settings</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="history">
