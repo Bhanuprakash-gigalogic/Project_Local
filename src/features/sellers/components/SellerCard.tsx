@@ -33,8 +33,8 @@ export const SellerCard = ({ application, onClick }: SellerCardProps) => {
                             {application.status}
                         </Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground truncate mb-1">
-                        {application.applicantName} • {application.businessType}
+                    <p className="text-sm text-muted-foreground mb-1 truncate">
+                        <span className="truncate">{application.applicantName}</span> • <span className="truncate">{application.businessType}</span>
                     </p>
                     <div className="flex flex-wrap items-center text-xs text-muted-foreground gap-3">
                         <div className="flex items-center gap-1">

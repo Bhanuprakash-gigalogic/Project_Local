@@ -84,22 +84,22 @@ export const SellerDetail = ({ application, onBack }: SellerDetailProps) => {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="min-w-0">
                                     <label className="text-xs font-medium text-muted-foreground uppercase">Business Name</label>
-                                    <p className="font-medium">{application.businessName}</p>
+                                    <p className="font-medium truncate">{application.businessName}</p>
                                 </div>
-                                <div>
+                                <div className="min-w-0">
                                     <label className="text-xs font-medium text-muted-foreground uppercase">Business Type</label>
-                                    <p className="font-medium">{application.businessType}</p>
+                                    <p className="font-medium truncate">{application.businessType}</p>
                                 </div>
-                                <div>
+                                <div className="min-w-0">
                                     <label className="text-xs font-medium text-muted-foreground uppercase">Tax ID / Reg No</label>
                                     <p className="font-medium">XX-XXXXXXX</p>
                                 </div>
-                                <div>
+                                <div className="min-w-0">
                                     <label className="text-xs font-medium text-muted-foreground uppercase">Address</label>
-                                    <p className="font-medium">
+                                    <p className="font-medium text-sm">
                                         {application.address.street}, {application.address.city}<br />
                                         {application.address.state}, {application.address.zip}
                                     </p>
@@ -117,16 +117,16 @@ export const SellerDetail = ({ application, onBack }: SellerDetailProps) => {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="min-w-0">
                                     <label className="text-xs font-medium text-muted-foreground uppercase">Full Name</label>
-                                    <p className="font-medium">{application.applicantName}</p>
+                                    <p className="font-medium truncate">{application.applicantName}</p>
                                 </div>
-                                <div>
+                                <div className="min-w-0">
                                     <label className="text-xs font-medium text-muted-foreground uppercase">Email Address</label>
-                                    <p className="font-medium">{application.email}</p>
+                                    <p className="font-medium truncate text-sm">{application.email}</p>
                                 </div>
-                                <div>
+                                <div className="min-w-0">
                                     <label className="text-xs font-medium text-muted-foreground uppercase">Phone Number</label>
                                     <p className="font-medium">{application.phone}</p>
                                 </div>
