@@ -1,0 +1,257 @@
+﻿
+> admin-dashboard@0.0.0 lint
+> eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+
+
+C:\Users\Siva Sankar\Downloads\admin\src\components\ui\MetricCard.tsx
+  4:40  warning  'DollarSign' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\components\ui\Pagination.tsx
+   3:37  warning  'MoreHorizontal' is defined but never used  @typescript-eslint/no-unused-vars
+  12:11  warning  'pages' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\admin-setup\components\BannerUpload.tsx
+  5:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\admin-setup\components\CategoryForm.tsx
+  5:18  warning  'FolderPlus' is defined but never used    @typescript-eslint/no-unused-vars
+  5:30  warning  'ChevronRight' is defined but never used  @typescript-eslint/no-unused-vars
+  5:44  warning  'ChevronDown' is defined but never used   @typescript-eslint/no-unused-vars
+  8:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\admin-setup\components\SellerSelect.tsx
+  3:10  warning  'useForm' is defined but never used       @typescript-eslint/no-unused-vars
+  6:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\admin-setup\components\StoreForm.tsx
+  17:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\admin-setup\components\ZoneForm.tsx
+  16:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\admin-setup\hooks\useAdminAuth.ts
+    6:5   warning  'SetupProgress' is defined but never used            @typescript-eslint/no-unused-vars
+    8:5   warning  'SetupValidationResponse' is defined but never used  @typescript-eslint/no-unused-vars
+  100:43  warning  'clearAuth' is assigned a value but never used       @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\admin-setup\hooks\useAuthAdmin.ts
+  26:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  40:35  warning  'email' is defined but never used         @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\admin-setup\screens\AdminLogin.tsx
+  44:54  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  46:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\admin-setup\screens\AdminSetupWizard.tsx
+    4:21  warning  'SetupStatus' is defined but never used                                                                     @typescript-eslint/no-unused-vars
+    7:5   warning  'Circle' is defined but never used                                                                          @typescript-eslint/no-unused-vars
+   24:19  warning  'validation' is assigned a value but never used                                                             @typescript-eslint/no-unused-vars
+   74:8   warning  React Hook useEffect has a missing dependency: 'steps'. Either include it or remove the dependency array    react-hooks/exhaustive-deps
+  127:35  error    Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\analytics\components\DailyMetricsTable.tsx
+   9:10  warning  'useExportSalesReport' is defined but never used  @typescript-eslint/no-unused-vars
+  10:10  warning  'useToast' is defined but never used              @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\analytics\hooks\useAnalytics.ts
+  55:28  warning  'filter' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\banners\components\BannerForm.tsx
+  5:39  warning  'ImageIcon' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\banners\hooks\useBanners.ts
+  74:73  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\banners\screens\BannersList.tsx
+  35:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  73:30  warning  'banner' is defined but never used        @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\campaigns\components\CampaignCard.tsx
+  6:37  warning  'MoreVertical' is defined but never used  @typescript-eslint/no-unused-vars
+  6:59  warning  'Copy' is defined but never used          @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\categories\components\CategoryForm.tsx
+  81:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  81:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  82:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\categories\screens\CategoriesTree.tsx
+  15:30  warning  'refetch' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\categories\services\category.service.ts
+  141:27  warning  'zoneId' is defined but never used        @typescript-eslint/no-unused-vars
+  308:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\cms\hooks\useCms.ts
+  11:5  error  'MOCK_CATEGORIES' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\dashboard\hooks\useDashboard.ts
+  2:8  warning  'axiosInstance' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\dashboard\screens\Dashboard.tsx
+  12:10  warning  'Badge' is defined but never used  @typescript-eslint/no-unused-vars
+  17:10  warning  'cn' is defined but never used     @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\module-13\components\Module13Form.tsx
+  53:11  warning  'nameValue' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  77:25  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\module-13\screens\Module13List.tsx
+  10:10  warning  'Module13' is defined but never used  @typescript-eslint/no-unused-vars
+  20:5   warning  'Edit2' is defined but never used     @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\module-13\services\module13.service.ts
+  82:17  error  'aVal' is never reassigned. Use 'const' instead  prefer-const
+  83:17  error  'bVal' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\module-13\types\module13.ts
+   8:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\module-14\components\Module14Form.tsx
+  53:11  warning  'nameValue' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  77:25  warning  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\module-14\screens\Module14List.tsx
+  10:10  warning  'Module14' is defined but never used  @typescript-eslint/no-unused-vars
+  20:5   warning  'Edit2' is defined but never used     @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\module-14\services\module14.service.ts
+  82:17  error  'aVal' is never reassigned. Use 'const' instead  prefer-const
+  83:17  error  'bVal' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\module-14\types\module14.ts
+   8:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\orders\components\OrderDetail.tsx
+  6:10  warning  'Badge' is defined but never used      @typescript-eslint/no-unused-vars
+  7:30  warning  'Package' is defined but never used    @typescript-eslint/no-unused-vars
+  7:39  warning  'RotateCcw' is defined but never used  @typescript-eslint/no-unused-vars
+  7:62  warning  'Calendar' is defined but never used   @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\orders\screens\OrdersList.tsx
+  1:27  warning  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\payouts\components\CommissionSettings.tsx
+  5:52  warning  'CardFooter' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\payouts\components\PayoutHistory.tsx
+   5:29  warning  'CardHeader' is defined but never used          @typescript-eslint/no-unused-vars
+   5:41  warning  'CardTitle' is defined but never used           @typescript-eslint/no-unused-vars
+  18:20  warning  'setStatus' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\payouts\hooks\usePayouts.ts
+   2:18  warning  'PayoutStatus' is defined but never used                 @typescript-eslint/no-unused-vars
+   2:66  warning  'VendorCommission' is defined but never used             @typescript-eslint/no-unused-vars
+  27:5   error    'MOCK_PAYOUTS' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\products\components\ProductApprovalDetail.tsx
+  6:52  warning  'CardDescription' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\products\screens\ProductApprovals.tsx
+  11:10  warning  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\rbac\hooks\useRoles.ts
+   2:33  warning  'ModulePermissions' is defined but never used                @typescript-eslint/no-unused-vars
+  78:5   error    'MOCK_PERMISSIONS' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\refunds\hooks\useRefunds.ts
+  2:39  warning  'RefundStatus' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\sellers\hooks\useSellerApprovals.ts
+  2:43  warning  'SellerStatus' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\sellers\screens\SellerApprovals.tsx
+  6:10  warning  'Input' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\stores\hooks\useStoreSellers.ts
+  84:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\stores\hooks\useStores.ts
+  108:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\stores\screens\AllocateSellers.tsx
+  11:10  warning  'Seller' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\stores\services\sellerAllocation.service.ts
+    7:5   warning  'AllocateSellerRequest' is defined but never used  @typescript-eslint/no-unused-vars
+    8:5   warning  'BulkAllocateRequest' is defined but never used    @typescript-eslint/no-unused-vars
+  123:31  warning  'storeId' is defined but never used                @typescript-eslint/no-unused-vars
+  123:48  warning  'sellerIds' is defined but never used              @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\users\components\UserDrawer.tsx
+   9:41  warning  'Shield' is defined but never used         @typescript-eslint/no-unused-vars
+   9:49  warning  'AlertTriangle' is defined but never used  @typescript-eslint/no-unused-vars
+  40:43  warning  Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\users\components\UserRow.tsx
+  5:10  warning  'MoreHorizontal' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\users\screens\UsersList.tsx
+   2:41  warning  'CardTitle' is defined but never used        @typescript-eslint/no-unused-vars
+   4:39  warning  'TabsContent' is defined but never used      @typescript-eslint/no-unused-vars
+  15:10  warning  'useSearchParams' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\zones\components\ZoneMap.tsx
+   1:37  warning  'useRef' is defined but never used                      @typescript-eslint/no-unused-vars
+   7:10  warning  'Loader2' is defined but never used                     @typescript-eslint/no-unused-vars
+   7:34  warning  'MousePointer2' is defined but never used               @typescript-eslint/no-unused-vars
+  13:5   error    'DefaultIcon' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\zones\hooks\useZoneSellers.ts
+  26:5  error  'mockZoneSellers' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\zones\hooks\useZones.ts
+  119:71  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\zones\screens\ZonesMapEditor.tsx
+  9:36  warning  'MapPin' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\features\zones\services\zone.service.ts
+  212:30  warning  'zoneId' is defined but never used   @typescript-eslint/no-unused-vars
+  217:26  warning  'payload' is defined but never used  @typescript-eslint/no-unused-vars
+  221:28  warning  'payload' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\layouts\AdminTopbar.tsx
+  5:10  warning  'Link' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Siva Sankar\Downloads\admin\src\lib\api.types.ts
+  1:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  5:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Siva Sankar\Downloads\admin\src\pages\admin\Analytics.tsx
+  3:1  warning  Fast refresh can't handle anonymous components. Add a name to your export  react-refresh/only-export-components
+
+C:\Users\Siva Sankar\Downloads\admin\src\pages\admin\CMS.tsx
+  3:1  warning  Fast refresh can't handle anonymous components. Add a name to your export  react-refresh/only-export-components
+
+C:\Users\Siva Sankar\Downloads\admin\src\pages\admin\Campaigns.tsx
+  3:1  warning  Fast refresh can't handle anonymous components. Add a name to your export  react-refresh/only-export-components
+
+C:\Users\Siva Sankar\Downloads\admin\src\pages\admin\Orders.tsx
+  3:1  warning  Fast refresh can't handle anonymous components. Add a name to your export  react-refresh/only-export-components
+
+C:\Users\Siva Sankar\Downloads\admin\src\pages\admin\Payouts.tsx
+  3:1  warning  Fast refresh can't handle anonymous components. Add a name to your export  react-refresh/only-export-components
+
+C:\Users\Siva Sankar\Downloads\admin\src\pages\admin\Products.tsx
+  3:1  warning  Fast refresh can't handle anonymous components. Add a name to your export  react-refresh/only-export-components
+
+C:\Users\Siva Sankar\Downloads\admin\src\pages\admin\Refunds.tsx
+  3:1  warning  Fast refresh can't handle anonymous components. Add a name to your export  react-refresh/only-export-components
+
+C:\Users\Siva Sankar\Downloads\admin\src\pages\admin\Sellers.tsx
+  3:1  warning  Fast refresh can't handle anonymous components. Add a name to your export  react-refresh/only-export-components
+
+C:\Users\Siva Sankar\Downloads\admin\src\pages\admin\Settings.tsx
+  3:1  warning  Fast refresh can't handle anonymous components. Add a name to your export  react-refresh/only-export-components
+
+C:\Users\Siva Sankar\Downloads\admin\src\pages\admin\Users.tsx
+  3:1  warning  Fast refresh can't handle anonymous components. Add a name to your export  react-refresh/only-export-components
+
+Γ£û 117 problems (10 errors, 107 warnings)
+  9 errors and 0 warnings potentially fixable with the `--fix` option.
+

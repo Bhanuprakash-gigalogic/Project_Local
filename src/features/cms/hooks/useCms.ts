@@ -8,7 +8,7 @@ let MOCK_BANNERS: Banner[] = [
     { id: 'b3', title: 'Draft Banner', imageUrl: 'https://placehold.co/600x200?text=Draft', linkUrl: '/test', status: 'draft', position: 3, createdAt: new Date().toISOString() },
 ];
 
-let MOCK_CATEGORIES: CategoryLanding[] = Array.from({ length: 10 }).map((_, i) => ({
+const MOCK_CATEGORIES: CategoryLanding[] = Array.from({ length: 10 }).map((_, i) => ({
     id: `cat-${i}`,
     name: `Category ${i + 1}`,
     slug: `category-${i + 1}`,

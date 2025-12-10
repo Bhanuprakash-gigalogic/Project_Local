@@ -23,7 +23,7 @@ const mockSellers: Seller[] = [
     { id: '5', name: 'Charlie Brown', email: 'charlie@example.com', phone: '+1234567894', is_active: true, created_at: new Date().toISOString() },
 ];
 
-let mockZoneSellers: Map<string, ZoneSeller[]> = new Map();
+const mockZoneSellers: Map<string, ZoneSeller[]> = new Map();
 
 // Search sellers
 export function useSearchSellers(filters: SellerFilters = {}) {

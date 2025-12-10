@@ -79,8 +79,8 @@ class Mockmodule14Service implements Imodule14Service {
         const sortBy = filters.sort_by || 'created_at';
         const sortOrder = filters.sort_order || 'desc';
         filtered.sort((a, b) => {
-            let aVal = sortBy === 'name' ? a.name : a.created_at;
-            let bVal = sortBy === 'name' ? b.name : b.created_at;
+            const aVal = sortBy === 'name' ? a.name : a.created_at;
+            const bVal = sortBy === 'name' ? b.name : b.created_at;
 
             if (sortOrder === 'asc') {
                 return aVal > bVal ? 1 : -1;

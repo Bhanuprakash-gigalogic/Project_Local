@@ -124,7 +124,7 @@ const AdminSetupWizard: React.FC = () => {
         try {
             const { data } = await validateSetup();
             // Fallback: if validation is not set up in backend yet, assume valid if all steps passed
-            if (data?.is_valid || progress?.allocated_sellers_count! > 0) {
+            if (data?.is_valid || (progress?.allocated_sellers_count ?? 0) > 0) {
                 navigate('/admin/dashboard');
             } else {
                 // Should show toast but for now just navigate as fail-safe if backend is quirky

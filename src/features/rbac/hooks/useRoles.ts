@@ -75,7 +75,7 @@ const generateDefaultPermissions = (roleId: string): RolePermissions => {
     };
 };
 
-let MOCK_PERMISSIONS: Record<string, RolePermissions> = {};
+const MOCK_PERMISSIONS: Record<string, RolePermissions> = {};
 MOCK_ROLES.forEach(role => {
     MOCK_PERMISSIONS[role.id] = generateDefaultPermissions(role.id);
 });

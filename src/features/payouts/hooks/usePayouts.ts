@@ -24,7 +24,7 @@ const generateMockPayouts = (count: number): Payout[] => {
     }));
 };
 
-let MOCK_PAYOUTS = generateMockPayouts(40);
+const MOCK_PAYOUTS = generateMockPayouts(40);
 
 export const useGetCommissionSettings = () => {
     return useQuery({
