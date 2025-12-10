@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Product } from '../types/product';
+import { formatCurrency } from '@/utils/format';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
@@ -70,7 +71,7 @@ export const ProductApprovalDetail = ({ product, onBack }: ProductApprovalDetail
                 </div>
                 <div className="flex flex-col items-end flex-shrink-0">
                     <Badge variant={statusVariant} className="uppercase mb-1 text-xs">{product.status}</Badge>
-                    <div className="text-sm font-semibold whitespace-nowrap">${product.price.toFixed(2)}</div>
+                    <div className="text-sm font-semibold whitespace-nowrap">{formatCurrency(product.price)}</div>
                 </div>
             </div>
 
@@ -123,7 +124,7 @@ export const ProductApprovalDetail = ({ product, onBack }: ProductApprovalDetail
                                         <TableRow key={v.id}>
                                             <TableCell className="font-mono text-xs">{v.sku}</TableCell>
                                             <TableCell>{v.name}</TableCell>
-                                            <TableCell className="text-right">${v.price.toFixed(2)}</TableCell>
+                                            <TableCell className="text-right">{formatCurrency(v.price)}</TableCell>
                                             <TableCell className="text-right">{v.stock}</TableCell>
                                         </TableRow>
                                     ))}

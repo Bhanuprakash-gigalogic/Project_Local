@@ -7,6 +7,8 @@ import { MetricCard } from '@/components/ui/MetricCard';
 import { DollarSign, ShoppingBag, TrendingUp } from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
 
+import { formatCurrency } from '@/utils/format';
+
 const AnalyticsSales = () => {
     const [range, setRange] = useState<'7d' | '30d' | '90d'>('7d');
     const filter: AnalyticsFilter = { dateRange: range };
@@ -51,7 +53,7 @@ const AnalyticsSales = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <MetricCard
                     title="Net Revenue"
-                    value={isOverviewLoading ? "..." : `$${overview?.netRevenue.value.toLocaleString()}`}
+                    value={isOverviewLoading ? "..." : formatCurrency(overview?.netRevenue.value ?? 0)}
                     icon={DollarSign}
                     trend={{
                         value: overview?.netRevenue.trend || 0,
@@ -71,7 +73,7 @@ const AnalyticsSales = () => {
                 />
                 <MetricCard
                     title="Avg. Order Value"
-                    value={isOverviewLoading ? "..." : `$${overview?.avgOrderValue.value.toFixed(2)}`}
+                    value={isOverviewLoading ? "..." : formatCurrency(overview?.avgOrderValue.value ?? 0)}
                     icon={TrendingUp}
                     trend={{
                         value: Math.abs(overview?.avgOrderValue.trend || 0),

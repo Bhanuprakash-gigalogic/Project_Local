@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Order, OrderStatus } from '../types/order';
+import { formatCurrency } from '@/utils/format';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -116,13 +117,13 @@ export const OrderDetail = ({ order, onBack }: OrderDetailProps) => {
                                         <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                                     </div>
                                     <div className="text-right font-medium">
-                                        ${(item.price * item.quantity).toFixed(2)}
+                                        {formatCurrency(item.price * item.quantity)}
                                     </div>
                                 </div>
                             ))}
                             <div className="flex justify-between pt-4 font-bold text-lg">
                                 <span>Total</span>
-                                <span>${order.totalAmount.toFixed(2)}</span>
+                                <span>{formatCurrency(order.totalAmount)}</span>
                             </div>
                         </CardContent>
                     </Card>

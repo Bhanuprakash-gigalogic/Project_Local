@@ -3,6 +3,7 @@ import { TableRow, TableCell } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
 import { ChevronRight } from 'lucide-react';
 import { Order } from '../types/order';
+import { formatCurrency } from '@/utils/format';
 
 interface OrderRowProps {
     order: Order;
@@ -35,7 +36,7 @@ export const OrderRow = ({ order, onClick }: OrderRowProps) => {
                 </Badge>
             </TableCell>
             <TableCell className="text-right font-medium">
-                ${order.totalAmount.toFixed(2)}
+                {formatCurrency(order.totalAmount)}
             </TableCell>
             <TableCell className="text-right">
                 <ChevronRight className="h-4 w-4 text-muted-foreground ml-auto" />

@@ -16,6 +16,7 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tool
 import { Skeleton } from '@/components/ui/Skeleton';
 import { cn } from '@/lib/utils';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { formatCurrency } from '@/utils/format';
 
 const Dashboard = () => {
     const [range, setRange] = useState('30d');
@@ -26,8 +27,7 @@ const Dashboard = () => {
     const { data: topProducts, isLoading: isProductsLoading } = useTopSellingProducts(range);
     const { data: lowInventory, isLoading: isInventoryLoading } = useLowInventory();
 
-    const formatCurrency = (value: number) =>
-        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+
 
     return (
         <div className="space-y-6">
@@ -54,7 +54,7 @@ const Dashboard = () => {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <DashboardMetricCard
                     title="Total GMV"
-                    value={summary ? formatCurrency(summary.gmv.value) : '$0.00'}
+                    value={summary ? formatCurrency(summary.gmv.value) : '₹0.00'}
                     trend={summary?.gmv.trend || 0}
                     icon={DollarSign}
                     loading={isSummaryLoading}
@@ -117,7 +117,7 @@ const Dashboard = () => {
                                             fontSize={12}
                                             tickLine={false}
                                             axisLine={false}
-                                            tickFormatter={(value) => `$${value}`}
+                                            tickFormatter={(value) => `₹${value}`}
                                         />
                                         <Tooltip
                                             contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))' }}

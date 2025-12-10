@@ -1,5 +1,6 @@
 import React from 'react';
 import { RefundRequest } from '../types/refund';
+import { formatCurrency } from '@/utils/format';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ChevronRight, PackageX, User } from 'lucide-react';
@@ -37,7 +38,7 @@ export const RefundCard = ({ refund, onClick }: RefundCardProps) => {
                             <span className="truncate">{refund.customerName}</span>
                         </span>
                         <span className="whitespace-nowrap">
-                            Amount: <span className="text-foreground font-medium">${refund.amount.toFixed(2)}</span>
+                            Amount: <span className="text-foreground font-medium">{formatCurrency(refund.amount)}</span>
                         </span>
                         <span className="hidden sm:inline whitespace-nowrap">
                             Req: {new Date(refund.requestedAt).toLocaleDateString()}

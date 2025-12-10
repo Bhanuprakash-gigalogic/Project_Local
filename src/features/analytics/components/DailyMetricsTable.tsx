@@ -1,5 +1,6 @@
 import React from 'react';
 import { DailyMetric } from '../types/analytics';
+import { formatCurrency } from '@/utils/format';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/Table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -57,9 +58,9 @@ export const DailyMetricsTable = ({ data, isLoading, onExport, isExporting }: Da
                                 <TableRow key={row.date}>
                                     <TableCell>{new Date(row.date).toLocaleDateString()}</TableCell>
                                     <TableCell className="text-right">{row.orders}</TableCell>
-                                    <TableCell className="text-right">${row.grossSales.toFixed(2)}</TableCell>
-                                    <TableCell className="text-right text-destructive">-${row.returns.toFixed(2)}</TableCell>
-                                    <TableCell className="text-right font-medium">${row.netSales.toFixed(2)}</TableCell>
+                                    <TableCell className="text-right">{formatCurrency(row.grossSales)}</TableCell>
+                                    <TableCell className="text-right text-destructive">-{formatCurrency(row.returns)}</TableCell>
+                                    <TableCell className="text-right font-medium">{formatCurrency(row.netSales)}</TableCell>
                                 </TableRow>
                             ))
                         )}
