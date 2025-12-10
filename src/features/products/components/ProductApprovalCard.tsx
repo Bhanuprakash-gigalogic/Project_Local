@@ -1,5 +1,6 @@
 import React from 'react';
 import { Product } from '../types/product';
+import { formatCurrency } from '@/utils/format';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ChevronRight, Calendar, Store } from 'lucide-react';
@@ -44,7 +45,7 @@ export const ProductApprovalCard = ({ product, onClick }: ProductApprovalCardPro
                             <Calendar size={12} /> {new Date(product.submittedAt).toLocaleDateString()}
                         </span>
                         <span className="font-medium text-foreground">
-                            ${product.price.toFixed(2)}
+                            {formatCurrency(product.price)}
                         </span>
                     </div>
 

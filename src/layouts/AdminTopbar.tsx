@@ -1,12 +1,18 @@
 import React from 'react';
 import { useUiStore } from '../store/ui.store';
-import { useAuth } from '../hooks/useAuth';
+import { useAuthStore } from '../features/auth/stores/auth.store';
 import { Search, Moon, Sun, User as UserIcon, LogOut } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AdminTopbar = () => {
     const { theme, setTheme } = useUiStore();
-    const { user, logout } = useAuth();
+    const { user, logout } = useAuthStore();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/admin/login');
+    };
 
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
@@ -50,7 +56,7 @@ const AdminTopbar = () => {
                         <p className="text-xs text-muted-foreground">{user?.email || 'admin@example.com'}</p>
                     </div>
                     <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center border">
-                        {user?.avatar ? (
+                        {user?.avatar ? ( // Assuming avatar might not exist on new User type, but keeping specifically if valid
                             <img src={user.avatar} alt="Avatar" className="rounded-full" />
                         ) : (
                             <UserIcon size={16} />
@@ -58,7 +64,7 @@ const AdminTopbar = () => {
                     </div>
 
                     <button
-                        onClick={() => logout()}
+                        onClick={handleLogout}
                         className="p-2 hover:bg-destructive/10 hover:text-destructive rounded-full"
                         title="Logout"
                     >

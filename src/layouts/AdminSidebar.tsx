@@ -12,9 +12,16 @@ import {
     FileText,
     BarChart2,
     Megaphone,
+    Wrench,
     Settings,
     ChevronLeft,
-    ChevronRight
+    ChevronRight,
+    MapPin,
+    Building2,
+    ListTree,
+    Image,
+    Layers,
+    Box
 } from 'lucide-react';
 
 const AdminSidebar = () => {
@@ -22,6 +29,10 @@ const AdminSidebar = () => {
 
     const navItems = [
         { path: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+        { path: '/admin/setup', label: 'Setup', icon: Wrench },
+        { path: '/admin/zones', label: 'Zones', icon: MapPin },
+        { path: '/admin/stores', label: 'Stores', icon: Building2 },
+        { path: '/admin/categories', label: 'Categories', icon: ListTree },
         { path: '/admin/users', label: 'Users', icon: Users },
         { path: '/admin/sellers', label: 'Sellers', icon: Store },
         { path: '/admin/products', label: 'Products', icon: Package },
@@ -31,6 +42,9 @@ const AdminSidebar = () => {
         { path: '/admin/cms', label: 'CMS', icon: FileText },
         { path: '/admin/analytics', label: 'Analytics', icon: BarChart2 },
         { path: '/admin/campaigns', label: 'Campaigns', icon: Megaphone },
+        { path: '/admin/banners', label: 'Banners', icon: Image },
+        { path: '/admin/module-13', label: 'Inventory Management', icon: Layers },
+        { path: '/admin/module-14', label: 'Logistics Management', icon: Box },
         { path: '/admin/settings/rbac', label: 'Settings', icon: Settings },
     ];
 

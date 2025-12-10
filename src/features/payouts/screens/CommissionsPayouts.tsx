@@ -6,6 +6,8 @@ import { MetricCard } from '@/components/ui/MetricCard';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/Tabs';
 import { DollarSign, Clock, Calendar } from 'lucide-react';
 
+import { formatCurrency } from '@/utils/format';
+
 const CommissionsPayouts = () => {
     const { data: overview, isLoading, error } = useGetPayoutOverview();
 
@@ -24,14 +26,14 @@ const CommissionsPayouts = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <MetricCard
                     title="Total Paid Out"
-                    value={isLoading ? "..." : `$${overview?.totalPaid.toLocaleString() ?? '0'}`}
+                    value={isLoading ? "..." : formatCurrency(overview?.totalPaid ?? 0)}
                     icon={DollarSign}
                     trend={{ value: 12, isPositive: true }}
                     description="vs last month"
                 />
                 <MetricCard
                     title="Pending Payouts"
-                    value={isLoading ? "..." : `$${overview?.pendingAmount.toLocaleString() ?? '0'}`}
+                    value={isLoading ? "..." : formatCurrency(overview?.pendingAmount ?? 0)}
                     icon={Clock}
                     description="Scheduled for processing"
                 />

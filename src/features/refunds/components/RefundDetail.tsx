@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { RefundRequest } from '../types/refund';
+import { formatCurrency } from '@/utils/format';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -120,12 +121,12 @@ export const RefundDetail = ({ refund, onBack }: RefundDetailProps) => {
                                             <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
                                         </div>
                                     </div>
-                                    <div className="font-bold">${item.amount.toFixed(2)}</div>
+                                    <div className="font-bold">{formatCurrency(item.amount)}</div>
                                 </div>
                             ))}
                             <div className="flex justify-between pt-4 text-lg font-bold">
                                 <span>Total Refund Amount</span>
-                                <span>${refund.amount.toFixed(2)}</span>
+                                <span>{formatCurrency(refund.amount)}</span>
                             </div>
                         </CardContent>
                     </Card>

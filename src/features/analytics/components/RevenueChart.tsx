@@ -3,6 +3,7 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tool
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { RevenuePoint } from '../types/analytics';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { formatCurrency } from '@/utils/format';
 
 interface RevenueChartProps {
     data?: RevenuePoint[];
@@ -50,7 +51,7 @@ export const RevenueChart = ({ data, isLoading }: RevenueChartProps) => {
                             fontSize={12}
                             tickLine={false}
                             axisLine={false}
-                            tickFormatter={(value) => `$${value}`}
+                            tickFormatter={(value) => formatCurrency(value)}
                         />
                         <Tooltip
                             contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}

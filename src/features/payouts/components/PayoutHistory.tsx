@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGetPayoutHistory, useRetryPayout } from '../hooks/usePayouts';
 import { PayoutStatus } from '../types/payout';
+import { formatCurrency } from '@/utils/format';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
@@ -100,7 +101,7 @@ export const PayoutHistory = () => {
                                         <TableCell>{new Date(payout.date).toLocaleDateString()}</TableCell>
                                         <TableCell>{statusBadge(payout.status)}</TableCell>
                                         <TableCell className="text-right font-medium">
-                                            ${payout.amount.toFixed(2)}
+                                            {formatCurrency(payout.amount)}
                                         </TableCell>
                                         <TableCell className="text-right">
                                             {payout.status === 'failed' && (
