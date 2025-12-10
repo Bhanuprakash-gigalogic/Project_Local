@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zone } from '../types/zones.types';
+import { Zone } from '../types/zone';
 import ZoneMap from './ZoneMapWrapper';
 import { Copy, Download, MapPin, X } from 'lucide-react';
 import { calculatePolygonAreaSqKm } from '../utils/geo';
@@ -10,19 +10,19 @@ interface ZoneDetailProps {
 }
 
 const ZoneDetail: React.FC<ZoneDetailProps> = ({ zone, onClose }) => {
-    const area = calculatePolygonAreaSqKm(zone.polygon).toFixed(2);
+    const area = calculatePolygonAreaSqKm({ type: 'Polygon', coordinates: [zone.polygon_coords] }).toFixed(2);
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(JSON.stringify(zone.polygon.coordinates, null, 2));
+        navigator.clipboard.writeText(JSON.stringify(zone.polygon_coords, null, 2));
         // In a real app, use toast here
         alert('Coordinates copied to clipboard!');
     };
 
     const handleDownload = () => {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(zone.polygon, null, 2));
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(zone.polygon_coords, null, 2));
         const downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", `${zone.code}_polygon.json`);
+        downloadAnchorNode.setAttribute("download", `${zone.name.replace(/\s+/g, '_')}_polygon.json`);
         document.body.appendChild(downloadAnchorNode);
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
@@ -34,14 +34,11 @@ const ZoneDetail: React.FC<ZoneDetailProps> = ({ zone, onClose }) => {
                 <div>
                     <h2 className="text-xl font-bold tracking-tight">{zone.name}</h2>
                     <div className="flex items-center gap-2 mt-1">
-                        <span className="text-sm font-mono text-muted-foreground bg-secondary px-2 py-0.5 rounded">
-                            {zone.code}
-                        </span>
-                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold border ${zone.status === 'active'
+                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold border ${zone.is_active
                             ? 'bg-green-50 text-green-700 border-green-200'
                             : 'bg-gray-50 text-gray-700 border-gray-200'
                             }`}>
-                            {zone.status === 'active' ? 'Active' : 'Inactive'}
+                            {zone.is_active ? 'Active' : 'Inactive'}
                         </span>
                     </div>
                 </div>
@@ -66,18 +63,10 @@ const ZoneDetail: React.FC<ZoneDetailProps> = ({ zone, onClose }) => {
                     <div className="p-4 rounded-lg border bg-card">
                         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
                             <MapPin className="w-4 h-4" />
-                            Stores
+                            Sellers
                         </div>
-                        <div className="text-2xl font-bold">{zone.storeCount}</div>
+                        <div className="text-2xl font-bold">{zone.seller_count || 0}</div>
                     </div>
-                </div>
-
-                {/* Description */}
-                <div>
-                    <h3 className="text-sm font-medium text-foreground mb-2">Description</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                        {zone.description || 'No description provided.'}
-                    </p>
                 </div>
 
                 {/* Map Preview */}
@@ -102,7 +91,11 @@ const ZoneDetail: React.FC<ZoneDetailProps> = ({ zone, onClose }) => {
                         </div>
                     </div>
                     <div className="border rounded-lg overflow-hidden relative">
-                        <ZoneMap value={zone.polygon} mode="view" height="300px" />
+                        <ZoneMap
+                            value={{ type: 'Polygon', coordinates: [zone.polygon_coords] }}
+                            mode="view"
+                            height="300px"
+                        />
                     </div>
                 </div>
 
@@ -110,11 +103,11 @@ const ZoneDetail: React.FC<ZoneDetailProps> = ({ zone, onClose }) => {
                 <div className="pt-6 border-t grid grid-cols-2 gap-4 text-xs text-muted-foreground">
                     <div>
                         <span className="block font-medium text-foreground">Created</span>
-                        {new Date(zone.createdAt).toLocaleString()}
+                        {new Date(zone.created_at).toLocaleString()}
                     </div>
                     <div>
                         <span className="block font-medium text-foreground">Last Updated</span>
-                        {new Date(zone.updatedAt).toLocaleString()}
+                        {new Date(zone.updated_at).toLocaleString()}
                     </div>
                 </div>
             </div>

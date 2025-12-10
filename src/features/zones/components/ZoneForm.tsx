@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, X, AlertCircle, Map as MapIcon, FileText } from 'lucide-react';
 import { Zone, CreateZoneDTO, UpdateZoneDTO } from '../types/zone';
 import ZoneMap from './ZoneMap';
-import { GeoJSONPolygon } from '../types/zones.types';
+import { GeoJSONPolygon } from '../types/zone';
 
 const zoneSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -230,8 +230,8 @@ const ZoneFormWithMap: React.FC<ZoneFormProps> = ({ zone, onSubmit, onCancel, is
                                 type="button"
                                 onClick={() => setInputMode('map')}
                                 className={`inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md ${inputMode === 'map'
-                                        ? 'bg-primary text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    ? 'bg-primary text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                             >
                                 <MapIcon size={14} className="mr-1.5" />
@@ -241,8 +241,8 @@ const ZoneFormWithMap: React.FC<ZoneFormProps> = ({ zone, onSubmit, onCancel, is
                                 type="button"
                                 onClick={() => setInputMode('manual')}
                                 className={`inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md ${inputMode === 'manual'
-                                        ? 'bg-primary text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    ? 'bg-primary text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                             >
                                 <FileText size={14} className="mr-1.5" />

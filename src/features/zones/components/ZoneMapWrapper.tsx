@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { GeoJSONPolygon } from '../types/zones.types';
+import { GeoJSONPolygon } from '../types/zone';
 import { Loader2 } from 'lucide-react';
 
 const ZoneMapLazy = lazy(() => import('./ZoneMap'));

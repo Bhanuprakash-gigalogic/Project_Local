@@ -71,7 +71,7 @@ const ZoneAllocationComponent: React.FC<ZoneAllocationComponentProps> = ({ zoneI
     );
 
     // Filter out already allocated sellers
-    const allocatedSellerIds = new Set(allocations?.allocations.map((a: ZoneAllocation) => a.seller_id) || []);
+    const allocatedSellerIds = new Set(allocations?.sellers.map((a: ZoneAllocation) => a.seller_id) || []);
     const availableSellers = filteredSellers.filter(s => !allocatedSellerIds.has(s.id));
 
     return (
@@ -98,7 +98,7 @@ const ZoneAllocationComponent: React.FC<ZoneAllocationComponentProps> = ({ zoneI
                 <div className="flex items-center justify-center py-8">
                     <Loader2 className="h-6 w-6 animate-spin text-primary" />
                 </div>
-            ) : allocations?.allocations.length === 0 ? (
+            ) : allocations?.sellers.length === 0 ? (
                 <div className="text-center py-8 bg-gray-50 border border-dashed rounded-lg">
                     <p className="text-gray-600 mb-2">No sellers allocated yet</p>
                     <button
@@ -110,7 +110,7 @@ const ZoneAllocationComponent: React.FC<ZoneAllocationComponentProps> = ({ zoneI
                 </div>
             ) : (
                 <div className="bg-white border rounded-lg divide-y">
-                    {allocations?.allocations.map((allocation) => (
+                    {allocations?.sellers.map((allocation) => (
                         <div
                             key={allocation.id}
                             className="flex items-center justify-between p-4 hover:bg-gray-50"

@@ -52,6 +52,8 @@ export interface UpdateSetupProgressDTO {
     mark_complete?: boolean;
 }
 
+export type SetupStepPayload = UpdateSetupProgressDTO;
+
 export interface SetupValidationResponse {
     is_valid: boolean;
     missing_requirements: string[];

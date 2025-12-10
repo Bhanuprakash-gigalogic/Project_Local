@@ -75,9 +75,9 @@ const StoreForm: React.FC<StoreStepProps> = ({ onComplete, onCancel }) => {
                         {...register('zoneId')}
                     >
                         <option value="">Select a zone</option>
-                        {zonesData?.data.map((zone) => (
+                        {zonesData?.zones.map((zone) => (
                             <option key={zone.id} value={zone.id}>
-                                {zone.name} ({zone.code})
+                                {zone.name}
                             </option>
                         ))}
                     </select>

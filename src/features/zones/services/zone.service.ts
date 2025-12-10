@@ -41,9 +41,9 @@ export interface IZoneService {
     restoreZone(id: string): Promise<Zone>;
     locateZone(request: LocateRequest): Promise<LocateResponse>;
     bulkAction(payload: BulkActionPayload): Promise<void>;
-    getZoneAllocations(zoneId: string): Promise<any>;
-    allocateToZone(payload: any): Promise<void>;
-    removeAllocation(payload: any): Promise<void>;
+    getZoneAllocations(zoneId: string): Promise<ZoneSellersResponse>;
+    allocateToZone(payload: AllocateSellerDTO | BulkAllocateSellersDTO): Promise<void>;
+    removeAllocation(payload: RemoveSellerDTO): Promise<void>;
 }
 
 class MockZoneService implements IZoneService {
@@ -209,16 +209,16 @@ class MockZoneService implements IZoneService {
         });
     }
 
-    async getZoneAllocations(zoneId: string): Promise<any> {
+    async getZoneAllocations(zoneId: string): Promise<ZoneSellersResponse> {
         await new Promise(r => setTimeout(r, 400));
         return { sellers: [], total: 0 };
     }
 
-    async allocateToZone(payload: any): Promise<void> {
+    async allocateToZone(payload: AllocateSellerDTO | BulkAllocateSellersDTO): Promise<void> {
         await new Promise(r => setTimeout(r, 600));
     }
 
-    async removeAllocation(payload: any): Promise<void> {
+    async removeAllocation(payload: RemoveSellerDTO): Promise<void> {
         await new Promise(r => setTimeout(r, 600));
     }
 }

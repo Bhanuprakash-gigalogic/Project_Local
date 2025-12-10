@@ -167,7 +167,7 @@ export function useRemoveAllocation() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (payload: { zone_id: string; allocation_id: string }) =>
+        mutationFn: (payload: { zone_id: string; seller_id: string }) =>
             zoneService.removeAllocation(payload),
         onSuccess: (_, variables) => {
             queryClient.invalidateQueries({ queryKey: ['zone-allocations', variables.zone_id] });

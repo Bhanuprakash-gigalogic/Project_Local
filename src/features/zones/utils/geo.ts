@@ -1,4 +1,4 @@
-import { GeoJSONPolygon } from '../types/zones.types';
+import { GeoJSONPolygon } from '../types/zone';
 
 // Approximate radius of earth in km
 const EARTH_RADIUS_KM = 6371;

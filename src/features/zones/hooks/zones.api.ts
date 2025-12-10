@@ -1,21 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { zoneService } from '../services/zones.service';
+import { zoneService } from '../services/zone.service';
 import {
     BulkActionPayload,
     CreateZoneDTO,
     UpdateZoneDTO,
     ZoneFilters
-} from '../types/zones.types';
+} from '../types/zone';
 
 export const useGetZones = (filters: ZoneFilters) => {
     return useQuery({
         queryKey: ['zones', filters],
-        queryFn: () => zoneService.getZones(
-            filters.page,
-            filters.limit,
-            filters.search,
-            filters.status
-        ),
+        queryFn: () => zoneService.getZones(filters),
         placeholderData: (prev) => prev
     });
 };
@@ -23,7 +18,7 @@ export const useGetZones = (filters: ZoneFilters) => {
 export const useGetZoneById = (id: string, enabled = true) => {
     return useQuery({
         queryKey: ['zones', id],
-        queryFn: () => zoneService.getZoneById(id),
+        queryFn: () => zoneService.getZone(id),
         enabled
     });
 };
@@ -41,7 +36,7 @@ export const useCreateZone = () => {
 export const useUpdateZone = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (data: UpdateZoneDTO) => zoneService.updateZone(data),
+        mutationFn: ({ id, data }: { id: string; data: UpdateZoneDTO }) => zoneService.updateZone(id, data),
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['zones'] });
             queryClient.invalidateQueries({ queryKey: ['zones', data.id] });
@@ -72,14 +67,8 @@ export const useBulkZonesAction = () => {
 export const useLocateZone = (lat?: number, lng?: number) => {
     return useQuery({
         queryKey: ['locate-zone', lat, lng],
-        queryFn: () => zoneService.locateZone(lat!, lng!),
+        queryFn: () => zoneService.locateZone({ lat: lat!, lng: lng! }),
         enabled: !!lat && !!lng
     });
 };
 
-export const useGetStoresForSelect = (search: string) => {
-    return useQuery({
-        queryKey: ['stores', search],
-        queryFn: () => zoneService.getStores(search)
-    });
-};
