@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useGetZoneAllocations, useAllocateToZone, useRemoveAllocation } from '../hooks/useZones';
-import { ZoneAllocation } from '../types/zone';
+import { ZoneSeller } from '../types/zone';
 import { Loader2, UserPlus, Trash2, Search, X } from 'lucide-react';
 import * as Dialog from '@radix-ui/react-dialog';
 
@@ -56,12 +56,12 @@ const ZoneAllocationComponent: React.FC<ZoneAllocationComponentProps> = ({ zoneI
         setSearchTerm('');
     };
 
-    const handleRemove = async (allocationId: string) => {
+    const handleRemove = async (sellerId: string) => {
         if (!confirm('Remove this seller from the zone?')) return;
 
         await removeMutation.mutateAsync({
             zone_id: zoneId,
-            allocation_id: allocationId,
+            seller_id: sellerId,
         });
     };
 
@@ -71,7 +71,7 @@ const ZoneAllocationComponent: React.FC<ZoneAllocationComponentProps> = ({ zoneI
     );
 
     // Filter out already allocated sellers
-    const allocatedSellerIds = new Set(allocations?.sellers.map((a: ZoneAllocation) => a.seller_id) || []);
+    const allocatedSellerIds = new Set(allocations?.sellers.map((a: ZoneSeller) => a.seller_id) || []);
     const availableSellers = filteredSellers.filter(s => !allocatedSellerIds.has(s.id));
 
     return (
@@ -124,7 +124,7 @@ const ZoneAllocationComponent: React.FC<ZoneAllocationComponentProps> = ({ zoneI
                                 </p>
                             </div>
                             <button
-                                onClick={() => handleRemove(allocation.id)}
+                                onClick={() => handleRemove(allocation.seller_id)}
                                 disabled={removeMutation.isPending}
                                 className="p-2 text-red-600 hover:bg-red-50 rounded disabled:opacity-50"
                                 title="Remove allocation"

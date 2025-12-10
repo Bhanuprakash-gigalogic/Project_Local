@@ -1,4 +1,4 @@
-import { SetupState, SetupStatus, SetupStep, SetupStepPayload } from '../types/setup';
+import { SetupState, SetupStatus, SetupStep, UpdateSetupProgressDTO } from '../types/setup';
 
 // Mock initial state
 const INITIAL_STATE: SetupState = {
@@ -25,7 +25,7 @@ export const setupService = {
         return { ...mockDbState };
     },
 
-    async updateStep(payload: SetupStepPayload): Promise<SetupState> {
+    async updateStep(payload: UpdateSetupProgressDTO): Promise<SetupState> {
         await new Promise(resolve => setTimeout(resolve, 800));
 
         // Update completion status

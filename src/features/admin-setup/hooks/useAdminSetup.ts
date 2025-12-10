@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { setupService } from '../services/setup.service';
-import { SetupStepPayload } from '../types/setup';
+import { UpdateSetupProgressDTO } from '../types/setup';
 
 export const useAdminSetup = () => {
     const queryClient = useQueryClient();
@@ -11,7 +11,7 @@ export const useAdminSetup = () => {
     });
 
     const updateStep = useMutation({
-        mutationFn: (payload: SetupStepPayload) => setupService.updateStep(payload),
+        mutationFn: (payload: UpdateSetupProgressDTO) => setupService.updateStep(payload),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['admin-setup-status'] });
         }

@@ -23,6 +23,8 @@ export interface AdminAuthResponse {
 
 export enum SetupStep {
     ZONES = 'zones',
+    STORES = 'stores',
+    SELLERS = 'sellers',
     CATEGORIES = 'categories',
     BANNERS = 'banners',
     SELLER_ALLOCATION = 'seller_allocation',
@@ -45,6 +47,20 @@ export interface SetupProgress {
     allocated_sellers_count: number;
     is_setup_complete: boolean;
     updated_at: string;
+}
+
+export interface SetupState {
+    currentStep: SetupStep;
+    status: SetupStatus;
+    lastUpdated: string;
+    completedSteps: SetupStep[];
+    data: {
+        zones: boolean;
+        stores: boolean;
+        sellers: boolean;
+        categories: boolean;
+        banners: boolean;
+    };
 }
 
 export interface UpdateSetupProgressDTO {
