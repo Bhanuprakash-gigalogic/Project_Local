@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: admindb
+    # persistent volume for data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+
+volumes:
+  postgres_data:
