@@ -655,6 +655,10 @@ const Home = () => {
     setProducts(productsToShow);
     setFeaturedProducts(productsToShow.slice(0, 4));
     setNewArrivals(productsToShow.slice(4, 12));
+
+    // Set top sellers from mock data
+    const mockSellersList = Object.values(mockSellers);
+    setTopSellers(mockSellersList);
   };
 
   if (loading || zoneLoading) {
