@@ -230,11 +230,11 @@ const ReviewOrder = () => {
                   style={styles.itemImage}
                 />
                 <div style={styles.itemInfo}>
-                  <h3 style={styles.itemName}>{item.product.name}</h3>
-                  <p style={styles.itemQty}>Qty: {item.quantity}</p>
+                  <h3 style={styles.itemName}>{item.product?.name || 'Product'}</h3>
+                  <p style={styles.itemQty}>Qty: {item.quantity || 1}</p>
                 </div>
                 <div style={styles.itemPrice}>
-                  ${(item.product.price * item.quantity).toFixed(2)}
+                  ₹{(Number(item.product?.price || 0) * Number(item.quantity || 1)).toLocaleString('en-IN')}
                 </div>
               </div>
             ))}
@@ -246,19 +246,19 @@ const ReviewOrder = () => {
             <div style={styles.totalsCard}>
               <div style={styles.totalRow}>
                 <span>Subtotal</span>
-                <span>${getCartTotal().toFixed(2)}</span>
+                <span>₹{Number(getCartTotal() || 0).toLocaleString('en-IN')}</span>
               </div>
               <div style={styles.totalRow}>
                 <span>Shipping</span>
-                <span>$5.00</span>
+                <span>₹50</span>
               </div>
               <div style={styles.totalRow}>
                 <span>Taxes</span>
-                <span>$2.40</span>
+                <span>₹{Number((getCartTotal() || 0) * 0.18).toLocaleString('en-IN')}</span>
               </div>
               <div style={{...styles.totalRow, ...styles.totalRowFinal}}>
                 <span>Total</span>
-                <span>${(getCartTotal() + 5 + 2.40).toFixed(2)}</span>
+                <span>₹{Number((getCartTotal() || 0) + 50 + ((getCartTotal() || 0) * 0.18)).toLocaleString('en-IN')}</span>
               </div>
             </div>
           </div>

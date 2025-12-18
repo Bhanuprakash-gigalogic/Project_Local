@@ -96,19 +96,19 @@ const OrderConfirmed = () => {
           <h2 style={styles.summaryTitle}>Order Summary</h2>
           <div style={styles.summaryRow}>
             <span>3 Items</span>
-            <span>$42.50</span>
+            <span>₹4,250</span>
           </div>
           <div style={styles.summaryRow}>
             <span>Shipping</span>
-            <span>$5.00</span>
+            <span>₹50</span>
           </div>
           <div style={styles.summaryRow}>
             <span>Tax</span>
-            <span>$2.40</span>
+            <span>₹765</span>
           </div>
           <div style={{...styles.summaryRow, ...styles.summaryTotal}}>
             <span>Total</span>
-            <span>$49.90</span>
+            <span>₹5,065</span>
           </div>
         </div>
 

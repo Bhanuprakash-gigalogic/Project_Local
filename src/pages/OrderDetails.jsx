@@ -146,11 +146,11 @@ const OrderDetails = () => {
                   style={styles.itemImage}
                 />
                 <div style={styles.itemDetails}>
-                  <h4 style={styles.itemName}>{item.name || item.product?.name}</h4>
-                  <p style={styles.itemQuantity}>Quantity: {item.quantity}</p>
+                  <h4 style={styles.itemName}>{item.name || item.product?.name || 'Product'}</h4>
+                  <p style={styles.itemQuantity}>Quantity: {item.quantity || 1}</p>
                 </div>
                 <span style={styles.itemPrice}>
-                  ${(item.price || item.product?.price || 0).toFixed(2)}
+                  ₹{Number(item.price || item.product?.price || 0).toLocaleString('en-IN')}
                 </span>
               </div>
             ))}
@@ -162,15 +162,17 @@ const OrderDetails = () => {
           <h3 style={styles.sectionTitle}>Order Summary</h3>
           <div style={styles.summaryRow}>
             <span>Subtotal</span>
-            <span>${order.total?.toFixed(2)}</span>
+            <span>₹{order.total ? Number(order.total).toLocaleString('en-IN') : '0'}</span>
           </div>
           <div style={styles.summaryRow}>
             <span>Shipping</span>
-            <span>$5.00</span>
+            <span>₹50</span>
           </div>
           <div style={{...styles.summaryRow, ...styles.totalRow}}>
             <span style={{fontWeight: '700'}}>Total</span>
-            <span style={{fontWeight: '700', color: '#FF6B35'}}>${(order.total + 5).toFixed(2)}</span>
+            <span style={{fontWeight: '700', color: '#FF6B35'}}>
+              ₹{order.total ? (Number(order.total) + 50).toLocaleString('en-IN') : '50'}
+            </span>
           </div>
         </div>
 

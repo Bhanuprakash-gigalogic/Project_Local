@@ -312,25 +312,47 @@ const Orders = () => {
                 </div>
 
                 <div style={styles.orderItems}>
-                  {order.items.map((item, index) => (
-                    <div key={index} style={styles.orderItem}>
-                      <img
-                        src={item.image || 'https://via.placeholder.com/80'}
-                        alt={item.name}
-                        style={styles.itemImage}
-                      />
-                      <div style={styles.itemDetails}>
-                        <h4 style={styles.itemName}>{item.name}</h4>
-                        <p style={styles.itemQuantity}>Quantity: {item.quantity}</p>
-                      </div>
-                      <span style={styles.itemPrice}>₹{item.price.toLocaleString('en-IN')}</span>
+                  {order.items && order.items.length > 0 ? (
+                    order.items.map((item, index) => {
+                      // Handle both cart item structure and order item structure
+                      const product = item.product || item;
+                      const itemName = product.product_name || product.name || 'Product';
+                      const itemImage = product.image_url || product.image || 'https://via.placeholder.com/80';
+                      const itemPrice = Number(product.price || item.price || 0);
+                      const itemQuantity = Number(item.quantity || 1);
+
+                      return (
+                        <div key={index} style={styles.orderItem}>
+                          <img
+                            src={itemImage}
+                            alt={itemName}
+                            style={styles.itemImage}
+                            onError={(e) => {
+                              e.target.src = 'https://via.placeholder.com/80?text=Product';
+                            }}
+                          />
+                          <div style={styles.itemDetails}>
+                            <h4 style={styles.itemName}>{itemName}</h4>
+                            <p style={styles.itemQuantity}>Quantity: {itemQuantity}</p>
+                          </div>
+                          <span style={styles.itemPrice}>
+                            ₹{itemPrice ? itemPrice.toLocaleString('en-IN') : '0'}
+                          </span>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div style={{padding: '20px', textAlign: 'center', color: '#666'}}>
+                      No items in this order
                     </div>
-                  ))}
+                  )}
                 </div>
 
                 <div style={styles.orderFooter}>
                   <div style={styles.orderTotal}>
-                    Total: <span style={{color: '#8B4513', marginLeft: '8px'}}>₹{order.total.toLocaleString('en-IN')}</span>
+                    Total: <span style={{color: '#8B4513', marginLeft: '8px'}}>
+                      ₹{order.total ? Number(order.total).toLocaleString('en-IN') : '0'}
+                    </span>
                   </div>
 
                   <div style={{display: 'flex', gap: '12px'}}>

@@ -17,7 +17,7 @@ const Cart = () => {
     // Simple coupon logic - you can expand this
     if (couponCode.toUpperCase() === 'SAVE25') {
       setDiscount(25);
-      alert('Coupon applied! $25 discount');
+      alert('Coupon applied! ₹25 discount');
     } else if (couponCode) {
       alert('Invalid coupon code');
     }
@@ -83,7 +83,9 @@ const Cart = () => {
                 <div style={styles.productInfo}>
                   <h3 style={styles.productName}>{productName}</h3>
                   <p style={styles.productVariant}>Variant: Default</p>
-                  <p style={styles.productPrice}>${productPrice?.toFixed(2)}</p>
+                  <p style={styles.productPrice}>
+                    ₹{productPrice ? Number(productPrice).toLocaleString('en-IN') : '0'}
+                  </p>
 
                   {/* Quantity Control */}
                   <div style={styles.quantityControl}>
@@ -145,23 +147,31 @@ const Cart = () => {
           <div style={styles.summarySection}>
             <div style={styles.summaryRow}>
               <span style={styles.summaryLabel}>Subtotal</span>
-              <span style={styles.summaryValue}>${subtotal.toFixed(2)}</span>
+              <span style={styles.summaryValue}>
+                ₹{Number(subtotal || 0).toLocaleString('en-IN')}
+              </span>
             </div>
             <div style={styles.summaryRow}>
               <span style={styles.summaryLabel}>Shipping</span>
-              <span style={styles.summaryValue}>${shipping.toFixed(2)}</span>
+              <span style={styles.summaryValue}>
+                ₹{Number(shipping || 0).toLocaleString('en-IN')}
+              </span>
             </div>
             {discount > 0 && (
               <div style={styles.summaryRow}>
                 <span style={styles.summaryLabel}>Discount</span>
-                <span style={styles.discountValue}>-${discount.toFixed(2)}</span>
+                <span style={styles.discountValue}>
+                  -₹{Number(discount || 0).toLocaleString('en-IN')}
+                </span>
               </div>
             )}
 
             {/* Total */}
             <div style={styles.totalRow}>
               <span style={styles.totalLabel}>Total</span>
-              <span style={styles.totalValue}>${total.toFixed(2)}</span>
+              <span style={styles.totalValue}>
+                ₹{Number(total || 0).toLocaleString('en-IN')}
+              </span>
             </div>
 
             {/* Checkout Button */}

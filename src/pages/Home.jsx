@@ -753,8 +753,9 @@ const Home = () => {
 
             <div style={styles.sellersGrid}>
               {topSellers.slice(0, 3).map((seller) => (
-                <div
+                <Link
                   key={seller.seller_id}
+                  to={`/seller/${seller.seller_id}`}
                   style={styles.sellerCard}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-4px)';
@@ -803,14 +804,11 @@ const Home = () => {
                     </div>
 
                     {/* View Products Link */}
-                    <Link
-                      to={`/seller/${seller.seller_id}`}
-                      style={styles.viewProductsLink}
-                    >
+                    <div style={styles.viewProductsLink}>
                       View Products <span>›</span>
-                    </Link>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </section>
