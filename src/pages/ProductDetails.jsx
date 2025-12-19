@@ -644,7 +644,12 @@ const ProductDetails = () => {
       }
 
     } catch (error) {
-      console.error('Error fetching product details:', error);
+      // Only log non-network errors
+      if (error.code !== 'ERR_NETWORK' && !error.message?.includes('Network Error')) {
+        console.error('Error fetching product details:', error);
+      } else {
+        console.log('📡 Backend unavailable - Using mock product data');
+      }
 
       // Mock data fallback - search in centralized database
       let foundProduct = null;

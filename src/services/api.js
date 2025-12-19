@@ -36,14 +36,25 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Handle 401 errors
+// Handle 401 errors and network errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Handle authentication errors
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       window.location.href = '/';
     }
+
+    // Suppress console errors for connection refused (backend not running)
+    // The app will fall back to mock data automatically
+    if (error.code === 'ERR_NETWORK' || error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
+      // Silently fail - mock data will be used
+      if (isDevelopment) {
+        console.log('📡 Backend not available, using mock data');
+      }
+    }
+
     return Promise.reject(error);
   }
 );
@@ -209,6 +220,37 @@ export const reviewsAPI = {
   deleteProductReview: (reviewId) => api.delete(`${BASE_URL}/reviews/product/${reviewId}`),
   markReviewHelpful: (reviewId, helpful) => api.post(`${BASE_URL}/reviews/product/${reviewId}/helpful`, { helpful }),
   reportReview: (reviewId, reportData) => api.post(`${BASE_URL}/reviews/report/${reviewId}`, reportData),
+};
+
+// ============================================
+// 🛠️ HELPER: Safe API Call with Mock Fallback
+// ============================================
+/**
+ * Wraps an API call to gracefully handle errors and provide mock data fallback
+ * @param {Function} apiCall - The API function to call
+ * @param {*} mockData - The mock data to return if API fails
+ * @param {string} logMessage - Optional log message for debugging
+ * @returns {Promise} - Resolves with API data or mock data
+ */
+export const safeAPICall = async (apiCall, mockData, logMessage = '') => {
+  try {
+    const response = await apiCall();
+    if (isDevelopment && logMessage) {
+      console.log(`✅ ${logMessage}:`, response.data);
+    }
+    return { success: true, data: response.data, source: 'api' };
+  } catch (error) {
+    // Only log non-network errors in development
+    if (isDevelopment && error.code !== 'ERR_NETWORK' && !error.message?.includes('Network Error')) {
+      console.warn(`⚠️ ${logMessage} failed:`, error.message);
+    }
+
+    if (isDevelopment && logMessage) {
+      console.log(`🔄 Using mock data for ${logMessage}`);
+    }
+
+    return { success: false, data: mockData, source: 'mock', error };
+  }
 };
 
 export default api;

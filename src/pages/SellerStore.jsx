@@ -118,7 +118,12 @@ const SellerStore = () => {
       setSeller(sellerRes.data);
       setProducts(productsRes.data.products || []);
     } catch (error) {
-      console.error('Error fetching seller data:', error);
+      // Only log non-network errors
+      if (error.code !== 'ERR_NETWORK' && !error.message?.includes('Network Error')) {
+        console.error('Error fetching seller data:', error);
+      } else {
+        console.log('📡 Backend unavailable - Using mock seller data');
+      }
 
       // Use centralized mock seller data
       const sellerData = mockSellers[parseInt(id)] || mockSellers[1];

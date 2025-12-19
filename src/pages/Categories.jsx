@@ -29,7 +29,12 @@ const Categories = () => {
       const categoryData = response.data.data || response.data || [];
       setCategories(categoryData);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      // Only log non-network errors
+      if (error.code !== 'ERR_NETWORK' && !error.message?.includes('Network Error')) {
+        console.error('Error fetching categories:', error);
+      } else {
+        console.log('📡 Backend unavailable - Using mock categories');
+      }
       // Load mock data for development
       loadMockCategories();
     } finally {

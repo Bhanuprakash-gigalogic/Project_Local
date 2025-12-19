@@ -590,7 +590,12 @@ const Home = () => {
       }
 
     } catch (error) {
-      console.error('Fetch error:', error);
+      // Only log non-network errors
+      if (error.code !== 'ERR_NETWORK' && !error.message?.includes('Network Error')) {
+        console.error('Fetch error:', error);
+      } else {
+        console.log('📡 Backend unavailable - Loading mock data');
+      }
       loadMockData();
     } finally {
       setLoading(false);
