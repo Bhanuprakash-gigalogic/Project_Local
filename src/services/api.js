@@ -48,11 +48,18 @@ api.interceptors.response.use(
 
     // Suppress console errors for connection refused (backend not running)
     // The app will fall back to mock data automatically
-    if (error.code === 'ERR_NETWORK' || error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
+    if (error.code === 'ERR_NETWORK' ||
+        error.code === 'ECONNREFUSED' ||
+        error.code === 'ERR_CONNECTION_REFUSED' ||
+        error.message?.includes('Network Error') ||
+        error.message?.includes('ERR_CONNECTION_REFUSED')) {
       // Silently fail - mock data will be used
-      if (isDevelopment) {
-        console.log('📡 Backend not available, using mock data');
-      }
+      // Don't log anything to keep console clean
+      return Promise.reject({
+        ...error,
+        silent: true,
+        message: 'Backend not available - using mock data'
+      });
     }
 
     return Promise.reject(error);
@@ -64,58 +71,58 @@ api.interceptors.response.use(
 // ============================================
 export const zoneAPI = {
   detectZone: (lat, lng, accuracy_meters = null) =>
-    axios.post(`${BASE_URL}/catalog/zones/locate`, { lat, lng, accuracy_meters }),
-  getCurrentZone: () => api.get(`${BASE_URL}/catalog/zones/current`),
+    api.post(`/catalog/zones/locate`, { lat, lng, accuracy_meters }),
+  getCurrentZone: () => api.get(`/catalog/zones/current`),
 };
 
 // ============================================
 // 🟣 STORES & SELLERS
 // ============================================
 export const storesAPI = {
-  getDefaultStore: () => axios.get(`${BASE_URL}/catalog/stores/default`),
-  getStoreById:  (storeId) => axios.get(`${BASE_URL}/catalog/stores/${storeId}`),
-  getStoreBanners: (storeId) => axios.get(`${BASE_URL}/catalog/stores/${storeId}/banners`),
-  getSellers: (params) => axios.get(`${BASE_URL}/catalog/sellers`, { params }),
-  getTopSellers: (params) => axios.get(`${BASE_URL}/catalog/sellers/top`, { params }),
-  getSellerById: (sellerId) => axios.get(`${BASE_URL}/catalog/sellers/${sellerId}`),
-  getStoresByCategory: (params) => axios.get(`${BASE_URL}/catalog/sellers`, { params }),
+  getDefaultStore: () => api.get(`/catalog/stores/default`),
+  getStoreById:  (storeId) => api.get(`/catalog/stores/${storeId}`),
+  getStoreBanners: (storeId) => api.get(`/catalog/stores/${storeId}/banners`),
+  getSellers: (params) => api.get(`/catalog/sellers`, { params }),
+  getTopSellers: (params) => api.get(`/catalog/sellers/top`, { params }),
+  getSellerById: (sellerId) => api.get(`/catalog/sellers/${sellerId}`),
+  getStoresByCategory: (params) => api.get(`/catalog/sellers`, { params }),
 };
 
 // ============================================
 // 🎨 BANNERS
 // ============================================
 export const bannersAPI = {
-  getActiveBanners: (params) => axios.get(`${BASE_URL}/catalog/banners/active`, { params }),
+  getActiveBanners: (params) => api.get(`/catalog/banners/active`, { params }),
 };
 
 // ============================================
 // 🟠 PRODUCTS
 // ============================================
 export const productsAPI = {
-  getProducts: (params) => axios.get(`${BASE_URL}/catalog/products`, { params }),
-  getProductById: (productId) => axios.get(`${BASE_URL}/catalog/products/${productId}`),
-  getNewArrivals: (params) => axios.get(`${BASE_URL}/catalog/products/new`, { params }),
-  getTrending: (params) => axios.get(`${BASE_URL}/catalog/products/trending`, { params }),
-  getDeals: (params) => axios.get(`${BASE_URL}/catalog/products/deals`, { params }),
-  getSimilarProducts: (productId) => axios.get(`${BASE_URL}/catalog/products/similar/${productId}`),
-  getRelatedProducts: (productId) => axios.get(`${BASE_URL}/catalog/products/related/${productId}`),
-  getProductReviews: (productId, params) => axios.get(`${BASE_URL}/catalog/products/reviews/${productId}`, { params }),
-  getSearchSuggestions: (query) => axios.get(`${BASE_URL}/catalog/products/search-suggestions`, { params: { q: query } }),
+  getProducts: (params) => api.get(`/catalog/products`, { params }),
+  getProductById: (productId) => api.get(`/catalog/products/${productId}`),
+  getNewArrivals: (params) => api.get(`/catalog/products/new`, { params }),
+  getTrending: (params) => api.get(`/catalog/products/trending`, { params }),
+  getDeals: (params) => api.get(`/catalog/products/deals`, { params }),
+  getSimilarProducts: (productId) => api.get(`/catalog/products/similar/${productId}`),
+  getRelatedProducts: (productId) => api.get(`/catalog/products/related/${productId}`),
+  getProductReviews: (productId, params) => api.get(`/catalog/products/reviews/${productId}`, { params }),
+  getSearchSuggestions: (query) => api.get(`/catalog/products/search-suggestions`, { params: { q: query } }),
 };
 
 // ============================================
 // 📂 CATEGORIES
 // ============================================
 export const categoriesAPI = {
-  getCategoryTree: (params) => axios.get(`${BASE_URL}/catalog/categories/tree`, { params }),
-  getFlatCategories: () => axios.get(`${BASE_URL}/catalog/categories/flat`),
+  getCategoryTree: (params) => api.get(`/catalog/categories/tree`, { params }),
+  getFlatCategories: () => api.get(`/catalog/categories/flat`),
 };
 
 // ============================================
 // 🔍 FILTERS
 // ============================================
 export const filtersAPI = {
-  getFilters: (params) => axios.get(`${BASE_URL}/catalog/filters`, { params }),
+  getFilters: (params) => api.get(`/catalog/filters`, { params }),
 };
 
 // ============================================
@@ -123,42 +130,42 @@ export const filtersAPI = {
 // ============================================
 export const wishlistAPI = {
   addToWishlist: (productId, variation = null) =>
-    api.post(`${BASE_URL}/cart/wishlist/add`, { product_id: productId, variation }),
-  getWishlist: (params) => api.get(`${BASE_URL}/cart/wishlist`, { params }),
+    api.post(`/cart/wishlist/add`, { product_id: productId, variation }),
+  getWishlist: (params) => api.get(`/cart/wishlist`, { params }),
   removeFromWishlist: (productId) =>
-    api.delete(`${BASE_URL}/cart/wishlist/remove`, { data: { product_id: productId } }),
+    api.delete(`/cart/wishlist/remove`, { data: { product_id: productId } }),
 };
 
 // ============================================
 // 🛒 CART (Requires Auth)
 // ============================================
 export const cartAPI = {
-  getCart: () => api.get(`${BASE_URL}/cart`),
-  getCartSummary: () => api.get(`${BASE_URL}/cart/summary`),
+  getCart: () => api.get(`/cart`),
+  getCartSummary: () => api.get(`/cart/summary`),
   addToCart: (productId, quantity = 1, variation = null) =>
-    api.post(`${BASE_URL}/cart/items`, { product_id: productId, quantity, variation }),
+    api.post(`/cart/items`, { product_id: productId, quantity, variation }),
   updateCartItem: (itemId, quantity, variation = null) =>
-    api.put(`${BASE_URL}/cart/items/${itemId}`, { quantity, ...(variation && { variation }) }),
-  removeFromCart: (itemId) => api.delete(`${BASE_URL}/cart/items/${itemId}`),
-  removeSellerItems: (sellerId) => api.delete(`${BASE_URL}/cart/items/seller/${sellerId}`),
-  clearCart: () => api.delete(`${BASE_URL}/cart/clear`),
+    api.put(`/cart/items/${itemId}`, { quantity, ...(variation && { variation }) }),
+  removeFromCart: (itemId) => api.delete(`/cart/items/${itemId}`),
+  removeSellerItems: (sellerId) => api.delete(`/cart/items/seller/${sellerId}`),
+  clearCart: () => api.delete(`/cart/clear`),
   applyCoupon: (sellerId, couponCode) =>
-    api.post(`${BASE_URL}/cart/apply-coupon`, { seller_id: sellerId, coupon_code: couponCode }),
-  removeCoupon: (sellerId) => api.delete(`${BASE_URL}/cart/remove-coupon/${sellerId}`),
-  moveToWishlist: (itemId) => api.post(`${BASE_URL}/cart/move-to-wishlist`, { item_id: itemId }),
+    api.post(`/cart/apply-coupon`, { seller_id: sellerId, coupon_code: couponCode }),
+  removeCoupon: (sellerId) => api.delete(`/cart/remove-coupon/${sellerId}`),
+  moveToWishlist: (itemId) => api.post(`/cart/move-to-wishlist`, { item_id: itemId }),
   moveFromWishlist: (wishlistId, quantity = 1) =>
-    api.post(`${BASE_URL}/cart/move-from-wishlist`, { wishlist_id: wishlistId, quantity }),
+    api.post(`/cart/move-from-wishlist`, { wishlist_id: wishlistId, quantity }),
 };
 
 // ============================================
 // 📍 ADDRESS (Requires Auth)
 // ============================================
 export const addressAPI = {
-  getAddresses: () => api.get(`${BASE_URL}/orders/addresses`),
-  addAddress: (addressData) => api.post(`${BASE_URL}/orders/addresses`, addressData),
-  updateAddress: (addressId, addressData) => api.put(`${BASE_URL}/orders/addresses/${addressId}`, addressData),
-  deleteAddress: (addressId) => api.delete(`${BASE_URL}/orders/addresses/${addressId}`),
-  setDefaultAddress: (addressId) => api.post(`${BASE_URL}/orders/addresses/${addressId}/set-default`),
+  getAddresses: () => api.get(`/orders/addresses`),
+  addAddress: (addressData) => api.post(`/orders/addresses`, addressData),
+  updateAddress: (addressId, addressData) => api.put(`/orders/addresses/${addressId}`, addressData),
+  deleteAddress: (addressId) => api.delete(`/orders/addresses/${addressId}`),
+  setDefaultAddress: (addressId) => api.post(`/orders/addresses/${addressId}/set-default`),
 };
 
 // ============================================
@@ -166,34 +173,34 @@ export const addressAPI = {
 // ============================================
 export const checkoutAPI = {
   getCheckoutSummary: (cartId, addressId) =>
-    api.get(`${BASE_URL}/orders/checkout/summary`, { params: { cart_id: cartId, address_id: addressId } }),
+    api.get(`/orders/checkout/summary`, { params: { cart_id: cartId, address_id: addressId } }),
 };
 
 // ============================================
 // 🟡 ORDERS & PAYMENT (Requires Auth)
 // ============================================
 export const ordersAPI = {
-  getOrders: (params) => api.get(`${BASE_URL}/orders`, { params }),
-  getActiveOrders: () => api.get(`${BASE_URL}/orders/active`),
-  getOrderById: (orderId) => api.get(`${BASE_URL}/orders/${orderId}`),
-  createOrder: (orderData) => api.post(`${BASE_URL}/orders/create`, orderData),
-  createOnlineOrder: (orderData) => api.post(`${BASE_URL}/orders/create/online`, orderData),
-  verifyRazorpayPayment: (paymentData) => api.post(`${BASE_URL}/orders/razorpay/verify`, paymentData),
-  getPaymentStatus: (orderId) => api.get(`${BASE_URL}/orders/${orderId}/payment-status`),
-  retryPayment: (orderId) => api.post(`${BASE_URL}/orders/${orderId}/retry-payment`),
-  getOrderTracking: (orderId) => api.get(`${BASE_URL}/orders/${orderId}/track`),
-  getInvoice: (orderId) => api.get(`${BASE_URL}/orders/${orderId}/invoice`, { responseType: 'blob' }),
-  cancelOrder: (orderId, reason) => api.post(`${BASE_URL}/orders/${orderId}/cancel`, { reason }),
-  initiateReturn: (orderId, returnData) => api.post(`${BASE_URL}/orders/${orderId}/return`, returnData),
+  getOrders: (params) => api.get(`/orders`, { params }),
+  getActiveOrders: () => api.get(`/orders/active`),
+  getOrderById: (orderId) => api.get(`/orders/${orderId}`),
+  createOrder: (orderData) => api.post(`/orders/create`, orderData),
+  createOnlineOrder: (orderData) => api.post(`/orders/create/online`, orderData),
+  verifyRazorpayPayment: (paymentData) => api.post(`/orders/razorpay/verify`, paymentData),
+  getPaymentStatus: (orderId) => api.get(`/orders/${orderId}/payment-status`),
+  retryPayment: (orderId) => api.post(`/orders/${orderId}/retry-payment`),
+  getOrderTracking: (orderId) => api.get(`/orders/${orderId}/track`),
+  getInvoice: (orderId) => api.get(`/orders/${orderId}/invoice`, { responseType: 'blob' }),
+  cancelOrder: (orderId, reason) => api.post(`/orders/${orderId}/cancel`, { reason }),
+  initiateReturn: (orderId, returnData) => api.post(`/orders/${orderId}/return`, returnData),
   requestReplacement: (orderId, formData) =>
-    api.post(`${BASE_URL}/orders/${orderId}/replace`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+    api.post(`/orders/${orderId}/replace`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
   reportIssue: (orderId, formData) =>
-    api.post(`${BASE_URL}/orders/${orderId}/issue`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  getReturnStatus: (orderId) => api.get(`${BASE_URL}/orders/${orderId}/return-status`),
-  confirmPickup: (orderId) => api.post(`${BASE_URL}/orders/${orderId}/return/confirm-pickup`),
+    api.post(`/orders/${orderId}/issue`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  getReturnStatus: (orderId) => api.get(`/orders/${orderId}/return-status`),
+  confirmPickup: (orderId) => api.post(`/orders/${orderId}/return/confirm-pickup`),
   uploadReturnProof: (orderId, formData) =>
-    api.post(`${BASE_URL}/orders/${orderId}/return/upload-proof`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  rateDelivery: (orderId, ratingData) => api.post(`${BASE_URL}/orders/${orderId}/rate-delivery`, ratingData),
+    api.post(`/orders/${orderId}/return/upload-proof`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  rateDelivery: (orderId, ratingData) => api.post(`/orders/${orderId}/rate-delivery`, ratingData),
 };
 
 // ============================================
@@ -202,24 +209,24 @@ export const ordersAPI = {
 export const reviewsAPI = {
   submitProductReview: (reviewData) => {
     if (reviewData instanceof FormData) {
-      return api.post(`${BASE_URL}/reviews/product`, reviewData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      return api.post(`/reviews/product`, reviewData, { headers: { 'Content-Type': 'multipart/form-data' } });
     }
-    return api.post(`${BASE_URL}/reviews/product`, reviewData);
+    return api.post(`/reviews/product`, reviewData);
   },
-  submitSellerReview: (reviewData) => api.post(`${BASE_URL}/reviews/seller`, reviewData),
-  getProductReviews: (productId, params) => api.get(`${BASE_URL}/reviews/product/${productId}`, { params }),
-  getSellerReviews: (sellerId, params) => api.get(`${BASE_URL}/reviews/seller/${sellerId}`, { params }),
-  getMyPendingReviews: () => api.get(`${BASE_URL}/reviews/my-pending`),
-  getMySubmittedReviews: () => api.get(`${BASE_URL}/reviews/my-submitted`),
+  submitSellerReview: (reviewData) => api.post(`/reviews/seller`, reviewData),
+  getProductReviews: (productId, params) => api.get(`/reviews/product/${productId}`, { params }),
+  getSellerReviews: (sellerId, params) => api.get(`/reviews/seller/${sellerId}`, { params }),
+  getMyPendingReviews: () => api.get(`/reviews/my-pending`),
+  getMySubmittedReviews: () => api.get(`/reviews/my-submitted`),
   editProductReview: (reviewId, reviewData) => {
     if (reviewData instanceof FormData) {
-      return api.put(`${BASE_URL}/reviews/product/${reviewId}`, reviewData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      return api.put(`/reviews/product/${reviewId}`, reviewData, { headers: { 'Content-Type': 'multipart/form-data' } });
     }
-    return api.put(`${BASE_URL}/reviews/product/${reviewId}`, reviewData);
+    return api.put(`/reviews/product/${reviewId}`, reviewData);
   },
-  deleteProductReview: (reviewId) => api.delete(`${BASE_URL}/reviews/product/${reviewId}`),
-  markReviewHelpful: (reviewId, helpful) => api.post(`${BASE_URL}/reviews/product/${reviewId}/helpful`, { helpful }),
-  reportReview: (reviewId, reportData) => api.post(`${BASE_URL}/reviews/report/${reviewId}`, reportData),
+  deleteProductReview: (reviewId) => api.delete(`/reviews/product/${reviewId}`),
+  markReviewHelpful: (reviewId, helpful) => api.post(`/reviews/product/${reviewId}/helpful`, { helpful }),
+  reportReview: (reviewId, reportData) => api.post(`/reviews/report/${reviewId}`, reportData),
 };
 
 // ============================================
@@ -240,15 +247,20 @@ export const safeAPICall = async (apiCall, mockData, logMessage = '') => {
     }
     return { success: true, data: response.data, source: 'api' };
   } catch (error) {
+    // Check if it's a network error
+    const isNetworkError = error.code === 'ERR_NETWORK' ||
+                          error.code === 'ECONNREFUSED' ||
+                          error.code === 'ERR_CONNECTION_REFUSED' ||
+                          error.message?.includes('Network Error') ||
+                          error.message?.includes('ERR_CONNECTION_REFUSED') ||
+                          error.silent;
+
     // Only log non-network errors in development
-    if (isDevelopment && error.code !== 'ERR_NETWORK' && !error.message?.includes('Network Error')) {
+    if (isDevelopment && !isNetworkError) {
       console.warn(`⚠️ ${logMessage} failed:`, error.message);
     }
 
-    if (isDevelopment && logMessage) {
-      console.log(`🔄 Using mock data for ${logMessage}`);
-    }
-
+    // Silently use mock data for network errors
     return { success: false, data: mockData, source: 'mock', error };
   }
 };
