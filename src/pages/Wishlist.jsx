@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 // Inline Styles
 const styles = {
   wishlistPage: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#F5F5DC',
     minHeight: '100vh',
     padding: '40px 0',
   },

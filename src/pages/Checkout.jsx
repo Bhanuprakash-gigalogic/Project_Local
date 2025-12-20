@@ -7,7 +7,7 @@ import { QRCodeSVG } from 'qrcode.react';
 // Inline Styles
 const styles = {
   checkoutPage: {
-    backgroundColor: '#F0F2F2',
+    backgroundColor: '#F5F5DC',
     minHeight: '100vh',
     padding: '20px 0',
   },

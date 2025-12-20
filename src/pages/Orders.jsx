@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 // Inline Styles
 const styles = {
   ordersPage: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#F5F5DC',
     minHeight: '100vh',
     padding: '40px 0',
   },

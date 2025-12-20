@@ -642,7 +642,7 @@ const AddAddress = () => {
 
 const styles = {
   page: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#F5F5DC',
     minHeight: '100vh',
     paddingBottom: '40px',
   },

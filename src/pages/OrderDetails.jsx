@@ -194,7 +194,7 @@ const OrderDetails = () => {
 const styles = {
   page: {
     minHeight: '100vh',
-    backgroundColor: '#F9FAFB',
+    backgroundColor: '#F5F5DC',
     paddingTop: '80px',
     paddingBottom: '40px',
   },

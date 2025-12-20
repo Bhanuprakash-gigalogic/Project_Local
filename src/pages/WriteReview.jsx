@@ -5,7 +5,7 @@ import { reviewsAPI } from '../services/api';
 // Inline Styles
 const styles = {
   writeReviewPage: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#F5F5DC',
     minHeight: '100vh',
     padding: '40px 0',
   },

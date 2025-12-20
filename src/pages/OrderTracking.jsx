@@ -5,7 +5,7 @@ import { ordersAPI } from '../services/api';
 // Inline Styles
 const styles = {
   trackingPage: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#F5F5DC',
     minHeight: '100vh',
     padding: '40px 0',
   },

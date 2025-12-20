@@ -8,7 +8,7 @@ import ProductCard from '../components/ProductCard';
 // Inline Styles
 const styles = {
   homePage: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#F5F5DC',
   },
   loading: {
     display: 'flex',

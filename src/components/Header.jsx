@@ -19,7 +19,7 @@ import { productsAPI } from '../services/api';
 // Inline Styles
 const styles = {
   header: {
-    backgroundColor: 'white',
+    backgroundColor: '#F5F5DC',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
     position: 'sticky',
     top: 0,
@@ -300,7 +300,7 @@ const styles = {
     textAlign: 'center',
   },
   headerLocationBar: {
-    backgroundColor: '#F9FAFB',
+    backgroundColor: '#F5F5DC',
     borderBottom: '1px solid #E0E0E0',
   },
   locationContent: {
