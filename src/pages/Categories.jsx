@@ -139,10 +139,10 @@ const Categories = () => {
   }
 
   return (
-    <div className="categories-page page-container">
-      <div className="container">
+    <div className="categories-page">
+      <div className="page-container">
         {/* Page Header */}
-        <div className="page-header">
+        <div className="page-header" style={{ paddingLeft: '24px', paddingRight: '24px' }}>
           <div className="page-header-content">
             <MdCategory className="page-icon" />
             <div>
@@ -152,7 +152,7 @@ const Categories = () => {
           </div>
         </div>
 
-        {/* Categories Grid */}
+        {/* Categories Grid - 4 columns, padding 0 24px */}
         <div className="categories-grid">
           {categories.map((category) => (
             <Link
@@ -168,7 +168,7 @@ const Categories = () => {
               <div className="category-content">
                 <div className="category-icon-badge">{category.icon}</div>
                 <h3 className="category-name">{category.name}</h3>
-                
+
                 <div className="category-stats">
                   <span className="category-stat">
                     {category.subcategory_count || 0} Subcategories

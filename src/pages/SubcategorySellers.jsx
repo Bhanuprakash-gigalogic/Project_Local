@@ -82,8 +82,8 @@ const SubcategorySellers = () => {
   }
 
   return (
-    <div className="subcategory-sellers-page page-container">
-      <div className="container">
+    <div className="subcategory-sellers-page">
+      <div className="page-container">
         {/* Breadcrumb */}
         <div className="breadcrumb">
           <Link to="/categories" className="breadcrumb-link">Categories</Link>
@@ -98,7 +98,7 @@ const SubcategorySellers = () => {
         </div>
 
         {/* Page Header */}
-        <div className="page-header">
+        <div className="page-header" style={{ paddingLeft: '24px', paddingRight: '24px' }}>
           <div className="page-header-content">
             <div className="page-icon-large">{subcategory?.icon}</div>
             <div>
@@ -110,7 +110,7 @@ const SubcategorySellers = () => {
           </div>
         </div>
 
-        {/* Sellers Grid */}
+        {/* Sellers Grid - 4 columns, padding 0 24px */}
         <div className="sellers-grid">
           {sellers.map((seller) => (
             <Link

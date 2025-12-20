@@ -74,10 +74,10 @@ const OutdoorBalconyCategory = () => {
   }
 
   return (
-    <div className="categories-page page-container">
-      <div className="container">
+    <div className="categories-page">
+      <div className="page-container">
         {/* Page Header */}
-        <div className="page-header">
+        <div className="page-header" style={{ paddingLeft: '24px', paddingRight: '24px' }}>
           <div className="page-header-content">
             <span style={{ fontSize: '48px' }}>🌿</span>
             <div>
@@ -87,7 +87,7 @@ const OutdoorBalconyCategory = () => {
           </div>
         </div>
 
-        {/* Subcategories Grid */}
+        {/* Subcategories Grid - 4 columns, padding 0 24px */}
         <div className="subcategories-grid">
           {outdoorBalconySubcategories.map((subcat) => (
             <Link
