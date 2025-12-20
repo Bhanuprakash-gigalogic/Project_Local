@@ -150,22 +150,36 @@ const OrderDetails = () => {
         <div style={styles.card}>
           <h3 style={styles.sectionTitle}>Order Items</h3>
           <div style={styles.itemsList}>
-            {order.items?.map((item, index) => (
-              <div key={index} style={styles.item}>
-                <img
-                  src={item.image || item.product?.image || 'https://via.placeholder.com/80'}
-                  alt={item.name || item.product?.name}
-                  style={styles.itemImage}
-                />
-                <div style={styles.itemDetails}>
-                  <h4 style={styles.itemName}>{item.name || item.product?.name || 'Product'}</h4>
-                  <p style={styles.itemQuantity}>Quantity: {item.quantity || 1}</p>
+            {order.items?.map((item, index) => {
+              // Handle multiple product data structures
+              const product = item.product || item;
+              const productName = product.product_name || product.name || item.name || 'Product';
+              const productImage = product.image_url || product.image || item.image || 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=80&h=80&fit=crop';
+              const productPrice = Number(product.price || item.price || 0);
+              const productQuantity = Number(item.quantity || 1);
+              const sellerName = product.seller_name || item.seller_name || 'Woodzon Seller';
+
+              return (
+                <div key={index} style={styles.item}>
+                  <img
+                    src={productImage}
+                    alt={productName}
+                    style={styles.itemImage}
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=80&h=80&fit=crop';
+                    }}
+                  />
+                  <div style={styles.itemDetails}>
+                    <h4 style={styles.itemName}>{productName}</h4>
+                    <p style={styles.itemSeller}>Sold by: {sellerName}</p>
+                    <p style={styles.itemQuantity}>Quantity: {productQuantity}</p>
+                  </div>
+                  <span style={styles.itemPrice}>
+                    ₹{productPrice.toLocaleString('en-IN')}
+                  </span>
                 </div>
-                <span style={styles.itemPrice}>
-                  ₹{Number(item.price || item.product?.price || 0).toLocaleString('en-IN')}
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -328,7 +342,12 @@ const styles = {
     fontSize: '16px',
     fontWeight: '600',
     color: '#1F2937',
-    margin: '0 0 8px 0',
+    margin: '0 0 4px 0',
+  },
+  itemSeller: {
+    fontSize: '13px',
+    color: '#8B4513',
+    margin: '0 0 4px 0',
   },
   itemQuantity: {
     fontSize: '14px',

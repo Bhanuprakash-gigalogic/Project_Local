@@ -156,6 +156,11 @@ const styles = {
     color: '#333',
     margin: '0 0 4px 0',
   },
+  itemSeller: {
+    fontSize: '13px',
+    color: '#8B4513',
+    margin: '0 0 4px 0',
+  },
   itemQuantity: {
     fontSize: '14px',
     color: '#666',
@@ -316,10 +321,11 @@ const Orders = () => {
                     order.items.map((item, index) => {
                       // Handle both cart item structure and order item structure
                       const product = item.product || item;
-                      const itemName = product.product_name || product.name || 'Product';
-                      const itemImage = product.image_url || product.image || 'https://via.placeholder.com/80';
+                      const itemName = product.product_name || product.name || item.name || 'Product';
+                      const itemImage = product.image_url || product.image || item.image || 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=80&h=80&fit=crop';
                       const itemPrice = Number(product.price || item.price || 0);
                       const itemQuantity = Number(item.quantity || 1);
+                      const sellerName = product.seller_name || item.seller_name || 'Woodzon Seller';
 
                       return (
                         <div key={index} style={styles.orderItem}>
@@ -328,11 +334,12 @@ const Orders = () => {
                             alt={itemName}
                             style={styles.itemImage}
                             onError={(e) => {
-                              e.target.src = 'https://via.placeholder.com/80?text=Product';
+                              e.target.src = 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=80&h=80&fit=crop';
                             }}
                           />
                           <div style={styles.itemDetails}>
                             <h4 style={styles.itemName}>{itemName}</h4>
+                            <p style={styles.itemSeller}>Sold by: {sellerName}</p>
                             <p style={styles.itemQuantity}>Quantity: {itemQuantity}</p>
                           </div>
                           <span style={styles.itemPrice}>
