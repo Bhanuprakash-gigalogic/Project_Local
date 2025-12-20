@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { storesAPI, categoriesAPI } from '../services/api';
 import { useZone } from '../context/ZoneContext';
 import { MdChevronRight, MdArrowBack, MdStar, MdStore, MdVerified } from 'react-icons/md';
-import { mockSubcategories, getSellersBySubcategory } from '../data/mockData';
+import { mockSubcategories, getSellersBySubcategory, getSubcategoryIdFromSlug } from '../data/mockData';
 
 const SubcategorySellers = () => {
   const { categoryId, subcategoryId } = useParams();
@@ -60,14 +60,62 @@ const SubcategorySellers = () => {
     setSellers(sellersData);
 
     // Get category and subcategory info
-    const categoryData = mockSubcategories[categoryId];
-    if (categoryData) {
-      setCategory({ name: categoryData.name, icon: categoryData.icon });
-      const subcategoryData = categoryData.subcategories.find(
-        sub => sub.subcategory_id === parseInt(subcategoryId)
-      );
-      if (subcategoryData) {
-        setSubcategory({ name: subcategoryData.name, icon: subcategoryData.icon });
+    // Handle both numeric IDs and slug-based IDs
+    const numericSubcategoryId = getSubcategoryIdFromSlug(subcategoryId);
+
+    // For slug-based categories (like 'living'), use hardcoded data
+    if (categoryId === 'living') {
+      setCategory({ name: 'Living Room Furniture', icon: '🛋️' });
+
+      // Map slug to subcategory name
+      const subcategoryNames = {
+        'sofa-sets': 'Sofa Sets',
+        'coffee-tables': 'Coffee Tables',
+        'tv-units': 'TV Units',
+        'wall-shelves': 'Wall Shelves',
+        'recliners': 'Recliners',
+        'lounge-chairs': 'Lounge Chairs',
+        'side-tables': 'Side Tables',
+        'fabric-sofas': 'Fabric Sofas',
+        'benches': 'Benches',
+        'bookshelves': 'Bookshelves',
+      };
+
+      setSubcategory({
+        name: subcategoryNames[subcategoryId] || subcategoryId,
+        icon: '🛋️'
+      });
+    } else if (categoryId === 'bedroom') {
+      setCategory({ name: 'Bedroom Furniture', icon: '🛏️' });
+      const subcategoryNames = {
+        'beds': 'Beds',
+        'wardrobes': 'Wardrobes',
+        'bedside-tables': 'Bedside Tables',
+        'dressing-tables': 'Dressing Tables',
+        'chest-drawers': 'Chest of Drawers',
+        'study-tables': 'Study Tables',
+      };
+      setSubcategory({ name: subcategoryNames[subcategoryId] || subcategoryId, icon: '🛏️' });
+    } else if (categoryId === 'dining') {
+      setCategory({ name: 'Dining Furniture', icon: '🍽️' });
+      const subcategoryNames = {
+        'dining-tables': 'Dining Tables',
+        'dining-chairs': 'Dining Chairs',
+        'bar-units': 'Bar Units',
+        'crockery-units': 'Crockery Units',
+      };
+      setSubcategory({ name: subcategoryNames[subcategoryId] || subcategoryId, icon: '🍽️' });
+    } else {
+      // For numeric category IDs, use existing logic
+      const categoryData = mockSubcategories[categoryId];
+      if (categoryData) {
+        setCategory({ name: categoryData.name, icon: categoryData.icon });
+        const subcategoryData = categoryData.subcategories.find(
+          sub => sub.subcategory_id === numericSubcategoryId
+        );
+        if (subcategoryData) {
+          setSubcategory({ name: subcategoryData.name, icon: subcategoryData.icon });
+        }
       }
     }
   };

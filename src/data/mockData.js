@@ -215,8 +215,82 @@ export const mockSubcategories = {
   },
 };
 
+// ============================================
+// SUBCATEGORY SLUG TO ID MAPPING
+// ============================================
+export const subcategorySlugToId = {
+  // Living Room
+  'sofa-sets': 104,
+  'coffee-tables': 103,
+  'tv-units': 106,
+  'wall-shelves': 106,
+  'recliners': 102,
+  'lounge-chairs': 102,
+  'side-tables': 103,
+  'fabric-sofas': 104,
+  'benches': 102,
+  'bookshelves': 106,
+
+  // Bedroom
+  'beds': 101,
+  'wardrobes': 105,
+  'bedside-tables': 103,
+  'dressing-tables': 103,
+  'chest-drawers': 105,
+  'study-tables': 103,
+
+  // Dining
+  'dining-tables': 103,
+  'dining-chairs': 102,
+  'bar-units': 106,
+  'crockery-units': 106,
+
+  // Storage
+  'cabinets': 106,
+  'shelving-units': 106,
+  'storage-boxes': 106,
+
+  // Mattress
+  'spring-mattress': 101,
+  'foam-mattress': 101,
+  'coir-mattress': 101,
+
+  // Outdoor
+  'garden-furniture': 102,
+  'balcony-sets': 104,
+  'outdoor-chairs': 102,
+
+  // Furnishings
+  'cushions': 104,
+  'curtains': 104,
+  'rugs': 104,
+
+  // Lighting
+  'ceiling-lights': 106,
+  'wall-lights': 106,
+  'table-lamps': 103,
+
+  // Interiors
+  'wall-panels': 106,
+  'false-ceiling': 106,
+  'partitions': 106,
+};
+
+// Helper function to get numeric ID from slug
+export const getSubcategoryIdFromSlug = (slug) => {
+  // If it's already a number, return it
+  if (!isNaN(slug)) {
+    return parseInt(slug);
+  }
+  // Otherwise, look up the slug
+  return subcategorySlugToId[slug] || null;
+};
+
 // Helper function to get sellers by subcategory
 export const getSellersBySubcategory = (subcategoryId) => {
+  // Convert slug to ID if needed
+  const numericId = getSubcategoryIdFromSlug(subcategoryId);
+
   // Return all 3 sellers for any subcategory (in real app, this would be filtered)
   return Object.values(mockSellers);
 };
@@ -886,7 +960,10 @@ export const getProductReviews = (productId) => {
 
 // Helper function to get products by subcategory and seller
 export const getProductsBySubcategoryAndSeller = (subcategoryId, sellerId) => {
-  const products = mockProducts[subcategoryId] || [];
+  // Convert slug to numeric ID if needed
+  const numericId = getSubcategoryIdFromSlug(subcategoryId);
+
+  const products = mockProducts[numericId] || [];
   if (sellerId) {
     return products.filter(p => p.seller_id === parseInt(sellerId));
   }
