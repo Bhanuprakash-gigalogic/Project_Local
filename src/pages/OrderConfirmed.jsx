@@ -8,10 +8,23 @@ const OrderConfirmed = () => {
   const [orderId, setOrderId] = useState('');
   const [copied, setCopied] = useState(false);
   const [estimatedDelivery, setEstimatedDelivery] = useState({ start: '', end: '' });
+  const [orderDateTime, setOrderDateTime] = useState('');
 
   useEffect(() => {
     const id = location.state?.orderId || `WDZ${Date.now()}`;
     setOrderId(id);
+
+    // Set current date and time
+    const now = new Date();
+    const formattedDateTime = now.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+    setOrderDateTime(formattedDateTime);
 
     // Calculate estimated delivery based on delivery method
     const deliveryMethod = localStorage.getItem('deliveryMethod') || 'standard';
@@ -88,6 +101,9 @@ const OrderConfirmed = () => {
               <MdContentCopy style={{fontSize: '18px'}} />
               {copied && <span style={styles.copiedText}>Copied!</span>}
             </button>
+          </div>
+          <div style={{marginTop: '12px', fontSize: '14px', color: '#666'}}>
+            Ordered on: {orderDateTime}
           </div>
         </div>
 

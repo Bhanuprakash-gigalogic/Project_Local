@@ -95,6 +95,41 @@ const ReviewOrder = () => {
         // Generate mock order ID
         orderId = `ORD${Date.now()}`;
 
+        // Get current date and time
+        const orderDate = new Date();
+
+        // Calculate estimated delivery based on delivery method
+        const isExpress = deliveryMethod === 'express';
+        const deliveryDays = isExpress ? 2 : 7; // Express: 2 days, Standard: 7 days
+
+        // Calculate estimated delivery date (skip weekends)
+        const getBusinessDate = (daysToAdd) => {
+          let date = new Date(orderDate);
+          let addedDays = 0;
+
+          while (addedDays < daysToAdd) {
+            date.setDate(date.getDate() + 1);
+            // Skip weekends (0 = Sunday, 6 = Saturday)
+            if (date.getDay() !== 0 && date.getDay() !== 6) {
+              addedDays++;
+            }
+          }
+
+          return date;
+        };
+
+        const estimatedDeliveryDate = getBusinessDate(deliveryDays);
+
+        // Create tracking timeline with realistic timestamps
+        const trackingTimeline = [
+          {
+            status: 'Order Confirmed',
+            timestamp: orderDate.toISOString(),
+            completed: true,
+            description: 'Your order has been confirmed and is being processed'
+          }
+        ];
+
         // Save order to localStorage for order history
         const mockOrders = JSON.parse(localStorage.getItem('mockOrders') || '[]');
         const newOrder = {
@@ -103,10 +138,14 @@ const ReviewOrder = () => {
           items: cart?.items || cart || [],
           total: getCartTotal(),
           status: 'confirmed',
-          created_at: new Date().toISOString(),
+          created_at: orderDate.toISOString(),
+          order_date: orderDate.toISOString(),
+          estimated_delivery: estimatedDeliveryDate.toISOString(),
           address: address,
           payment: payment,
           delivery_method: deliveryMethod || 'standard',
+          tracking_timeline: trackingTimeline,
+          current_tracking_status: 'Order Confirmed'
         };
         mockOrders.push(newOrder);
         localStorage.setItem('mockOrders', JSON.stringify(mockOrders));

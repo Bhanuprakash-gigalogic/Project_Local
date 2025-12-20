@@ -2,6 +2,20 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ordersAPI } from '../services/api';
 
+// Helper function to format date and time
+const formatDateTime = (date) => {
+  const d = new Date(date);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const day = d.getDate();
+  const month = months[d.getMonth()];
+  const hours = d.getHours();
+  const minutes = d.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const displayHours = hours % 12 || 12;
+  const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  return `${day} ${month}, ${displayHours}:${displayMinutes} ${ampm}`;
+};
+
 // Inline Styles
 const styles = {
   trackingPage: {
@@ -176,38 +190,150 @@ const OrderTracking = () => {
       setTracking(trackingData);
     } catch (error) {
       console.error('❌ Error fetching tracking:', error);
-      // Mock data fallback - Different tracking based on order ID
 
-      // Order #1 (WZ-2024-001) - Delivered
-      if (id === '1') {
+      // Mock data fallback - Load from localStorage
+      const mockOrders = JSON.parse(localStorage.getItem('mockOrders') || '[]');
+      const order = mockOrders.find(o => o.order_id === id);
+
+      if (order) {
+        // Generate realistic tracking timeline based on order creation time
+        const orderDate = new Date(order.created_at || order.order_date);
+        const now = new Date();
+
+        // Format date and time helper
+        const formatDateTime = (date) => {
+          const d = new Date(date);
+          const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          const day = d.getDate();
+          const month = months[d.getMonth()];
+          const hours = d.getHours();
+          const minutes = d.getMinutes();
+          const ampm = hours >= 12 ? 'PM' : 'AM';
+          const displayHours = hours % 12 || 12;
+          const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
+          return `${day} ${month}, ${displayHours}:${displayMinutes} ${ampm}`;
+        };
+
+        // Build tracking steps based on order timeline
+        const trackingSteps = [];
+
+        // Step 1: Order Confirmed (immediately when order is placed)
+        trackingSteps.push({
+          title: 'Order Confirmed',
+          time: formatDateTime(orderDate),
+          location: '',
+          completed: true
+        });
+
+        // Calculate time differences in hours
+        const hoursSinceOrder = (now - orderDate) / (1000 * 60 * 60);
+
+        // Step 2: Packing Completed (2-4 hours after order)
+        const packingTime = new Date(orderDate.getTime() + (2 * 60 * 60 * 1000)); // 2 hours later
+        if (hoursSinceOrder >= 2) {
+          trackingSteps.push({
+            title: 'Packing Completed',
+            time: formatDateTime(packingTime),
+            location: 'Seller Warehouse',
+            completed: true
+          });
+        }
+
+        // Step 3: Shipped (6-8 hours after order, or next day)
+        const shippedTime = new Date(orderDate.getTime() + (6 * 60 * 60 * 1000)); // 6 hours later
+        if (hoursSinceOrder >= 6) {
+          trackingSteps.push({
+            title: 'Shipped',
+            time: formatDateTime(shippedTime),
+            location: 'In Transit',
+            completed: true
+          });
+        }
+
+        // Step 4: In Transit (12-24 hours after order)
+        const inTransitTime = new Date(orderDate.getTime() + (12 * 60 * 60 * 1000)); // 12 hours later
+        if (hoursSinceOrder >= 12) {
+          trackingSteps.push({
+            title: 'In Transit',
+            time: formatDateTime(inTransitTime),
+            location: 'On the way to delivery hub',
+            completed: true
+          });
+        }
+
+        // Step 5: Out for Delivery (based on estimated delivery date)
+        const estimatedDelivery = new Date(order.estimated_delivery);
+        const outForDeliveryTime = new Date(estimatedDelivery);
+        outForDeliveryTime.setHours(10, 0, 0, 0); // 10:00 AM on delivery day
+
+        if (now >= outForDeliveryTime) {
+          trackingSteps.push({
+            title: 'Out for Delivery',
+            time: formatDateTime(outForDeliveryTime),
+            location: order.address?.city || 'Your City',
+            completed: true
+          });
+        } else {
+          trackingSteps.push({
+            title: 'Out for Delivery',
+            time: '',
+            location: '',
+            completed: false
+          });
+        }
+
+        // Step 6: Delivered
+        const deliveredTime = new Date(outForDeliveryTime.getTime() + (4 * 60 * 60 * 1000)); // 4 hours after out for delivery
+        if (now >= deliveredTime) {
+          trackingSteps.push({
+            title: 'Delivered',
+            time: formatDateTime(deliveredTime),
+            location: order.address?.city || 'Your City',
+            completed: true
+          });
+        } else {
+          trackingSteps.push({
+            title: 'Delivered',
+            time: '',
+            location: '',
+            completed: false
+          });
+        }
+
+        // Determine current status
+        let currentStatus = 'confirmed';
+        if (trackingSteps.find(s => s.title === 'Delivered' && s.completed)) {
+          currentStatus = 'delivered';
+        } else if (trackingSteps.find(s => s.title === 'Out for Delivery' && s.completed)) {
+          currentStatus = 'out_for_delivery';
+        } else if (trackingSteps.find(s => s.title === 'In Transit' && s.completed)) {
+          currentStatus = 'in_transit';
+        } else if (trackingSteps.find(s => s.title === 'Shipped' && s.completed)) {
+          currentStatus = 'shipped';
+        } else if (trackingSteps.find(s => s.title === 'Packing Completed' && s.completed)) {
+          currentStatus = 'packing';
+        }
+
         setTracking({
-          current_status: 'delivered',
-          eta: null,
-          tracking_steps: [
-            { title: 'Delivered', time: '9 Dec, 2:30 PM', location: 'Hyderabad, IN', completed: true },
-            { title: 'Out for Delivery', time: '9 Dec, 10:15 AM', location: 'Hyderabad, IN', completed: true },
-            { title: 'Package arrived at the final delivery station', time: '9 Dec, 12:48 AM', location: 'Hyderabad, IN', completed: true },
-            { title: 'Delivery appointment scheduled', time: '9 Dec, 12:17 AM', location: 'IN', completed: true },
-            { title: 'Package left the shipper facility', time: '8 Dec, 9:30 PM', location: '', completed: true },
-            { title: 'Packed at Store', time: '8 Dec, 4:10 PM', location: '', completed: true },
-            { title: 'Order Confirmed', time: '8 Dec, 2:25 PM', location: '', completed: true },
-          ],
+          current_status: currentStatus,
+          eta: currentStatus === 'delivered' ? null : formatDateTime(estimatedDelivery),
+          tracking_steps: trackingSteps,
           delivery_agent: {
-            name: 'Rajesh Kumar',
-            phone: '+919999888777',
+            name: 'Amit Sharma',
+            phone: '+919888777666',
             photo: 'https://via.placeholder.com/100'
           }
         });
-      }
-      // Order #2 (WZ-2024-002) - In Transit
-      else {
+      } else {
+        // Fallback for old orders or order ID not found
         setTracking({
-          current_status: 'in_transit',
-          eta: '2-3 hours',
+          current_status: 'confirmed',
+          eta: '5-7 business days',
           tracking_steps: [
-            { title: 'Order Confirmed', time: '7 Dec, 3:15 PM', completed: true },
-            { title: 'Packed at Store', time: '7 Dec, 5:20 PM', completed: true },
-            { title: 'Shipped', time: '8 Dec, 8:00 AM', completed: true, current: true },
+            { title: 'Order Confirmed', time: formatDateTime(new Date()), completed: true },
+            { title: 'Packing Completed', time: '', completed: false },
+            { title: 'Shipped', time: '', completed: false },
+            { title: 'In Transit', time: '', completed: false },
             { title: 'Out for Delivery', time: '', completed: false },
             { title: 'Delivered', time: '', completed: false },
           ],

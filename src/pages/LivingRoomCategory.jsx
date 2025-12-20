@@ -103,11 +103,13 @@ const LivingCategory = () => {
 
         {/* Living Subcategories Grid - 5 per row */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
-          gap: '24px',
-          marginTop: '32px'
-        }}>
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '24px',
+    marginTop: '30px',
+    padding: '0 24px',   // ✅ LEFT & RIGHT GAP
+  }}
+>
           {livingSubcategories.map((subcategory) => (
             <Link
               key={subcategory.id}
@@ -167,6 +169,7 @@ const LivingCategory = () => {
                   color: '#333',
                   marginBottom: '8px',
                   textAlign: 'center'
+          
                 }}>
                   {subcategory.name}
                 </h3>
@@ -176,7 +179,7 @@ const LivingCategory = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '8px',
-                  color: '#666',
+                  color: '#575757ff',
                   fontSize: '14px',
                   marginBottom: '12px'
                 }}>

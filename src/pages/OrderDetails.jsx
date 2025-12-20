@@ -94,12 +94,24 @@ const OrderDetails = () => {
             <div>
               <h2 style={styles.orderNumber}>Order #{order.order_id}</h2>
               <p style={styles.orderDate}>
-                Placed on {new Date(order.created_at).toLocaleDateString('en-US', {
+                Placed on {new Date(order.created_at || order.order_date).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
-                  day: 'numeric'
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  hour12: true
                 })}
               </p>
+              {order.estimated_delivery && (
+                <p style={{...styles.orderDate, color: '#22C55E', fontWeight: '600', marginTop: '4px'}}>
+                  Estimated Delivery: {new Date(order.estimated_delivery).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                </p>
+              )}
             </div>
             {getStatusBadge(order.status)}
           </div>

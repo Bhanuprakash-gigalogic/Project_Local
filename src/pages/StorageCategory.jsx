@@ -99,7 +99,8 @@ const StorageCategory = () => {
           display: 'grid',
           gridTemplateColumns: 'repeat(5, 1fr)',
           gap: '24px',
-          marginTop: '32px'
+          marginTop: '32px',
+          padding: '0 24px',   // ✅ LEFT & RIGHT GAP
         }}>
           {storageSubcategories.map((subcategory) => (
             <Link

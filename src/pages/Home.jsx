@@ -180,7 +180,7 @@ const styles = {
   },
   sellersGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)', // Fixed 3 cards in a horizontal row
+    gridTemplateColumns: 'repeat(4, 1fr)', // Fixed 3 cards in a horizontal row
     gap: '20px',
     width: '100%',
   },
@@ -217,7 +217,7 @@ const styles = {
     gap: '12px',
   },
   sellerName: {
-    fontSize: '16px',
+    fontSize: '18px',
     fontWeight: '600',
     margin: '0',
     color: '#0F1111',

@@ -31,7 +31,7 @@ const styles = {
   },
   sellersGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)', // 3 columns in a row
+    gridTemplateColumns: 'repeat(3, 0.5fr)', // 3 columns in a row
     gap: '20px',
   },
   sellerCard: {
