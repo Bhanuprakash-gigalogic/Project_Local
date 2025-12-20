@@ -63,48 +63,38 @@ const SubcategorySellers = () => {
     // Handle both numeric IDs and slug-based IDs
     const numericSubcategoryId = getSubcategoryIdFromSlug(subcategoryId);
 
-    // For slug-based categories (like 'living'), use hardcoded data
-    if (categoryId === 'living') {
-      setCategory({ name: 'Living Room Furniture', icon: '🛋️' });
+    // Helper function to format slug to title case
+    const formatSlugToName = (slug) => {
+      return slug
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    };
 
-      // Map slug to subcategory name
-      const subcategoryNames = {
-        'sofa-sets': 'Sofa Sets',
-        'coffee-tables': 'Coffee Tables',
-        'tv-units': 'TV Units',
-        'wall-shelves': 'Wall Shelves',
-        'recliners': 'Recliners',
-        'lounge-chairs': 'Lounge Chairs',
-        'side-tables': 'Side Tables',
-        'fabric-sofas': 'Fabric Sofas',
-        'benches': 'Benches',
-        'bookshelves': 'Bookshelves',
-      };
+    // Category metadata
+    const categoryMetadata = {
+      'living': { name: 'Living Room Furniture', icon: '🛋️' },
+      'bedroom': { name: 'Bedroom Furniture', icon: '🛏️' },
+      'dining': { name: 'Dining Furniture', icon: '🍽️' },
+      'storage': { name: 'Storage Solutions', icon: '🗄️' },
+      'mattress': { name: 'Mattress', icon: '🛏️' },
+      'outdoor-balcony': { name: 'Outdoor & Balcony', icon: '🌿' },
+      'furnishings': { name: 'Furnishings', icon: '🎨' },
+      'lighting-decor': { name: 'Lighting & Décor', icon: '💡' },
+      'interiors': { name: 'Interiors', icon: '🏡' },
+    };
 
+    // For slug-based categories
+    if (categoryMetadata[categoryId]) {
+      const catMeta = categoryMetadata[categoryId];
+      setCategory({ name: catMeta.name, icon: catMeta.icon });
+
+      // Use formatted slug name as fallback
+      const subcategoryName = formatSlugToName(subcategoryId);
       setSubcategory({
-        name: subcategoryNames[subcategoryId] || subcategoryId,
-        icon: '🛋️'
+        name: subcategoryName,
+        icon: catMeta.icon
       });
-    } else if (categoryId === 'bedroom') {
-      setCategory({ name: 'Bedroom Furniture', icon: '🛏️' });
-      const subcategoryNames = {
-        'beds': 'Beds',
-        'wardrobes': 'Wardrobes',
-        'bedside-tables': 'Bedside Tables',
-        'dressing-tables': 'Dressing Tables',
-        'chest-drawers': 'Chest of Drawers',
-        'study-tables': 'Study Tables',
-      };
-      setSubcategory({ name: subcategoryNames[subcategoryId] || subcategoryId, icon: '🛏️' });
-    } else if (categoryId === 'dining') {
-      setCategory({ name: 'Dining Furniture', icon: '🍽️' });
-      const subcategoryNames = {
-        'dining-tables': 'Dining Tables',
-        'dining-chairs': 'Dining Chairs',
-        'bar-units': 'Bar Units',
-        'crockery-units': 'Crockery Units',
-      };
-      setSubcategory({ name: subcategoryNames[subcategoryId] || subcategoryId, icon: '🍽️' });
     } else {
       // For numeric category IDs, use existing logic
       const categoryData = mockSubcategories[categoryId];

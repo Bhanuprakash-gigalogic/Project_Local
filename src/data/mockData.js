@@ -238,42 +238,69 @@ export const subcategorySlugToId = {
   'dressing-tables': 103,
   'chest-drawers': 105,
   'study-tables': 103,
+  'bed-sheets': 101,
+  'mattress': 101,
+  'photo-frames': 106,
+  'sofa-cum-beds': 104,
+  'trunk-blanket-box': 105,
+  'wall-mirrors': 106,
 
   // Dining
   'dining-tables': 103,
   'dining-chairs': 102,
   'bar-units': 106,
   'crockery-units': 106,
+  '6-seater-dining-table-sets': 103,
+  '4-seater-dining-table-sets': 103,
+  'modular-kitchen': 106,
+  'bar-cabinets': 106,
+  'bar-trolleys': 106,
+  'kitchen-cabinet': 106,
+  'kitchen-shelves': 106,
 
   // Storage
   'cabinets': 106,
   'shelving-units': 106,
   'storage-boxes': 106,
+  'shoe-racks': 106,
+  'book-shelves': 106,
+  'wall-shelves-storage': 106,
 
   // Mattress
   'spring-mattress': 101,
   'foam-mattress': 101,
   'coir-mattress': 101,
+  'orthopedic-mattress': 101,
+  'memory-foam-mattress': 101,
 
   // Outdoor
   'garden-furniture': 102,
   'balcony-sets': 104,
   'outdoor-chairs': 102,
+  'patio-furniture': 102,
+  'garden-benches': 102,
 
   // Furnishings
   'cushions': 104,
   'curtains': 104,
   'rugs': 104,
+  'carpets': 104,
+  'bed-covers': 101,
+  'table-runners': 103,
 
   // Lighting
   'ceiling-lights': 106,
   'wall-lights': 106,
   'table-lamps': 103,
+  'floor-lamps': 106,
+  'pendant-lights': 106,
 
   // Interiors
   'wall-panels': 106,
   'false-ceiling': 106,
   'partitions': 106,
+  'wall-cladding': 106,
+  'decorative-panels': 106,
 };
 
 // Helper function to get numeric ID from slug

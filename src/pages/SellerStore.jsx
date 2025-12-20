@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { storesAPI, productsAPI } from '../services/api';
-import { mockSellers, mockProducts, getProductsBySubcategoryAndSeller } from '../data/mockData';
+import { mockSellers, mockProducts, getProductsBySubcategoryAndSeller, getSubcategoryIdFromSlug } from '../data/mockData';
 import ProductCard from '../components/ProductCard';
 
 // Inline Styles - Matching Home page "Featured For You" layout
@@ -137,10 +137,11 @@ const SellerStore = () => {
 
       // Get products from centralized database
       let allProducts = [];
-      
+
       if (subcategoryId) {
         // Get products for specific subcategory
-        const subcategoryProducts = getProductsBySubcategoryAndSeller(parseInt(subcategoryId), parseInt(id));
+        // Pass subcategoryId directly - getProductsBySubcategoryAndSeller handles both slug and numeric IDs
+        const subcategoryProducts = getProductsBySubcategoryAndSeller(subcategoryId, parseInt(id));
         allProducts = subcategoryProducts;
       } else {
         // Get all products for this seller across all subcategories
