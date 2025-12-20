@@ -763,36 +763,21 @@ const Home = () => {
 
                   {/* Seller Info */}
                   <div style={styles.sellerCardContent}>
-                    {/* Verified Badge */}
-                    <div style={styles.verifiedBadge}>
-                      <span>✓</span>
-                      <span>Verified</span>
-                    </div>
-
                     {/* Seller Name */}
                     <h3 style={styles.sellerName}>{seller.business_name}</h3>
 
-                    {/* Rating */}
-                    <div style={styles.sellerRating}>
-                      <span>⭐</span>
-                      <span>{seller.rating || 4.8}({seller.review_count || 245} reviews)</span>
-                    </div>
-
-                    {/* Product Count */}
-                    <div style={styles.sellerProducts}>
-                      📦 {seller.product_count || 89} Products
-                    </div>
-
-                    {/* Location */}
-                    <div style={styles.sellerLocation}>
-                      <span>📍</span>
-                      <span>{seller.city || 'Bangalore'}, {seller.state || 'Karnataka'}</span>
-                    </div>
-
-                    {/* View Products Link */}
-                    <div style={styles.viewProductsLink}>
-                      View Products <span>›</span>
-                    </div>
+                    {/* View Products Button */}
+                    <button
+                      style={styles.viewProductsButton}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#6D3710';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = '#8B4513';
+                      }}
+                    >
+                      View Products
+                    </button>
                   </div>
                 </Link>
               ))}
