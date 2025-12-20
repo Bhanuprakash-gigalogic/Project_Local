@@ -43,7 +43,90 @@ const Categories = () => {
   };
 
   const loadMockCategories = () => {
-    setCategories(mockCategories);
+    // Load all categories for "All" view
+    const allCategories = [
+      {
+        category_id: 'living',
+        name: 'Living Room',
+        icon: '🛋️',
+        image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop',
+        subcategory_count: 10,
+        total_products: 212
+      },
+      {
+        category_id: 'bedroom',
+        name: 'Bedroom',
+        icon: '🛏️',
+        image: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=400&h=300&fit=crop',
+        subcategory_count: 12,
+        total_products: 419
+      },
+      {
+        category_id: 'mattress',
+        name: 'Mattress',
+        icon: '🛏️',
+        image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&h=300&fit=crop',
+        subcategory_count: 8,
+        total_products: 156
+      },
+      {
+        category_id: 'dining',
+        name: 'Dining',
+        icon: '🍽️',
+        image: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=400&h=300&fit=crop',
+        subcategory_count: 9,
+        total_products: 178
+      },
+      {
+        category_id: 'storage',
+        name: 'Storage',
+        icon: '🗄️',
+        image: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=400&h=300&fit=crop',
+        subcategory_count: 11,
+        total_products: 245
+      },
+      {
+        category_id: 'study-office',
+        name: 'Study & Office',
+        icon: '💼',
+        image: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400&h=300&fit=crop',
+        subcategory_count: 8,
+        total_products: 272
+      },
+      {
+        category_id: 'outdoor-balcony',
+        name: 'Outdoor & Balcony',
+        icon: '🌿',
+        image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&h=300&fit=crop',
+        subcategory_count: 8,
+        total_products: 243
+      },
+      {
+        category_id: 'furnishings',
+        name: 'Furnishings',
+        icon: '🎨',
+        image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&h=300&fit=crop',
+        subcategory_count: 8,
+        total_products: 400
+      },
+      {
+        category_id: 'lighting-decor',
+        name: 'Lighting & Décor',
+        icon: '💡',
+        image: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=400&h=300&fit=crop',
+        subcategory_count: 10,
+        total_products: 440
+      },
+      {
+        category_id: 'interiors',
+        name: 'Interiors',
+        icon: '🏡',
+        image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=400&h=300&fit=crop',
+        subcategory_count: 10,
+        total_products: 322
+      },
+    ];
+    setCategories(allCategories);
   };
 
   if (loading || zoneLoading) {
@@ -74,7 +157,7 @@ const Categories = () => {
           {categories.map((category) => (
             <Link
               key={category.category_id}
-              to={`/category/${category.category_id}/subcategories`}
+              to={`/categories/${category.category_id}`}
               className="category-card"
             >
               <div className="category-image">

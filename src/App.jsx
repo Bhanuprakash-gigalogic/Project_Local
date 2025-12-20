@@ -17,6 +17,11 @@ import BedroomCategory from './pages/BedroomCategory';
 import MattressCategory from './pages/MattressCategory';
 import DiningCategory from './pages/DiningCategory';
 import StorageCategory from './pages/StorageCategory';
+import StudyOfficeCategory from './pages/StudyOfficeCategory';
+import OutdoorBalconyCategory from './pages/OutdoorBalconyCategory';
+import FurnishingsCategory from './pages/FurnishingsCategory';
+import LightingDecorCategory from './pages/LightingDecorCategory';
+import InteriorsCategory from './pages/InteriorsCategory';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import Wishlist from './pages/Wishlist';
@@ -53,6 +58,11 @@ function App() {
                   <Route path="/categories/mattress" element={<MattressCategory />} />
                   <Route path="/categories/dining" element={<DiningCategory />} />
                   <Route path="/categories/storage" element={<StorageCategory />} />
+                  <Route path="/categories/study-office" element={<StudyOfficeCategory />} />
+                  <Route path="/categories/outdoor-balcony" element={<OutdoorBalconyCategory />} />
+                  <Route path="/categories/furnishings" element={<FurnishingsCategory />} />
+                  <Route path="/categories/lighting-decor" element={<LightingDecorCategory />} />
+                  <Route path="/categories/interiors" element={<InteriorsCategory />} />
                   <Route path="/category/:categoryId/subcategories" element={<Subcategories />} />
                   <Route path="/category/:categoryId/subcategory/:subcategoryId/sellers" element={<SubcategorySellers />} />
                   <Route path="/product/:id" element={<ProductDetails />} />
