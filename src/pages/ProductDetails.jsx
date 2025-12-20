@@ -723,12 +723,30 @@ const ProductDetails = () => {
     await addToCart(product, quantity, product.seller?.seller_id, selectedVariation);
   };
 
-  const handleBuyNow = async () => {
-    // Add to cart and navigate to checkout
-    const success = await addToCart(product, quantity, product.seller?.seller_id, selectedVariation);
-    if (success) {
-      navigate('/checkout');
-    }
+  const handleBuyNow = () => {
+    // Store product data in sessionStorage for checkout flow
+    const productId = product.product_id || product.id;
+
+    // Store checkout mode
+    sessionStorage.setItem('checkoutMode', 'buynow');
+
+    // Store complete product data with quantity
+    const checkoutProduct = {
+      product_id: productId,
+      id: productId,
+      name: product.name,
+      price: product.price,
+      mrp: product.mrp,
+      image: product.image,
+      seller: product.seller,
+      in_stock: product.in_stock,
+      quantity: quantity,
+    };
+
+    sessionStorage.setItem('buyNowProduct', JSON.stringify(checkoutProduct));
+
+    // Navigate to delivery address selection (same flow as cart)
+    navigate('/checkout/address');
   };
 
   const handleAddToWishlist = async () => {

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { ordersAPI, checkoutAPI, addressAPI } from '../services/api';
+import { ordersAPI, checkoutAPI, addressAPI, productsAPI } from '../services/api';
 import { QRCodeSVG } from 'qrcode.react';
+import { mockProducts } from '../data/mockData';
 
 // Inline Styles
 const styles = {
@@ -345,7 +346,15 @@ const styles = {
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { cart, getCartTotal, clearCart, updateQuantity } = useCart();
+
+  // Checkout mode: 'cart' or 'buynow'
+  const checkoutMode = searchParams.get('mode') || 'cart';
+  const productIdFromUrl = searchParams.get('productId');
+  const quantityFromUrl = parseInt(searchParams.get('quantity') || '1', 10);
+
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [showUpiQR, setShowUpiQR] = useState(false);
@@ -355,6 +364,10 @@ const Checkout = () => {
   const [checkoutSummary, setCheckoutSummary] = useState(null);
   const [showAddressForm, setShowAddressForm] = useState(false);
 
+  // Items to checkout (either from cart or single product for Buy Now)
+  const [checkoutItems, setCheckoutItems] = useState([]);
+  const [buyNowProduct, setBuyNowProduct] = useState(null);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -363,6 +376,21 @@ const Checkout = () => {
     city: '',
     zipCode: '',
   });
+
+  // Initialize checkout items based on mode
+  useEffect(() => {
+    const initializeCheckout = async () => {
+      if (checkoutMode === 'buynow' && productIdFromUrl) {
+        // Buy Now mode - fetch single product
+        await fetchBuyNowProduct(productIdFromUrl, quantityFromUrl);
+      } else {
+        // Cart mode - use cart items
+        setCheckoutItems(cart);
+      }
+    };
+
+    initializeCheckout();
+  }, [checkoutMode, productIdFromUrl, quantityFromUrl, cart]);
 
   // Fetch saved addresses on mount
   useEffect(() => {
@@ -375,6 +403,130 @@ const Checkout = () => {
       fetchCheckoutSummary();
     }
   }, [selectedAddressId, cart]);
+
+  // Fetch product details for Buy Now mode
+  const fetchBuyNowProduct = async (productId, quantity) => {
+    try {
+      setLoading(true);
+
+      // Try to fetch from API
+      try {
+        const response = await productsAPI.getProductById(productId);
+        const productData = response.data.data || response.data;
+
+        setBuyNowProduct(productData);
+
+        // Create checkout item structure similar to cart
+        const checkoutItem = {
+          product_id: productData.product_id || productData.id,
+          product: productData,
+          quantity: quantity,
+          price: productData.price,
+          total: productData.price * quantity,
+        };
+
+        setCheckoutItems([checkoutItem]);
+        console.log('✅ Buy Now product loaded from API:', productData.name);
+        return;
+      } catch (apiError) {
+        console.log('⚠️ API unavailable, trying sessionStorage...');
+      }
+
+      // Try to get from sessionStorage (set by ProductDetails page)
+      const sessionProduct = sessionStorage.getItem('buyNowProduct');
+      if (sessionProduct) {
+        try {
+          const productData = JSON.parse(sessionProduct);
+
+          setBuyNowProduct(productData);
+
+          const checkoutItem = {
+            product_id: productData.product_id || productData.id,
+            product: productData,
+            quantity: quantity,
+            price: productData.price,
+            total: productData.price * quantity,
+          };
+
+          setCheckoutItems([checkoutItem]);
+          console.log('✅ Buy Now product loaded from sessionStorage:', productData.name);
+
+          // Clear sessionStorage after use
+          sessionStorage.removeItem('buyNowProduct');
+          return;
+        } catch (parseError) {
+          console.log('⚠️ Failed to parse sessionStorage data');
+        }
+      }
+
+      // Fallback to mock product data - search in centralized database
+      let mockProduct = null;
+
+      // Search through all mock products
+      Object.keys(mockProducts).forEach(subcatId => {
+        const products = mockProducts[subcatId];
+        const match = products.find(p => p.id === parseInt(productId));
+        if (match) {
+          mockProduct = {
+            product_id: match.id,
+            id: match.id,
+            name: match.name,
+            price: match.price,
+            mrp: match.mrp,
+            image: match.image,
+            description: match.description,
+            category: match.category,
+            seller: {
+              seller_id: match.seller_id,
+              name: match.seller_name,
+            },
+            in_stock: match.in_stock,
+            rating: match.rating,
+          };
+        }
+      });
+
+      // If not found in mock database, use default product
+      if (!mockProduct) {
+        mockProduct = {
+          product_id: productId,
+          id: productId,
+          name: 'Teak Wood King Size Bed',
+          price: 45999,
+          image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500',
+          description: 'Premium quality teak wood bed with elegant design',
+          category: 'Bedroom',
+          seller: {
+            seller_id: 'seller_001',
+            name: 'Premium Wood Furniture',
+          },
+          in_stock: true,
+          rating: 4.5,
+        };
+      }
+
+      setBuyNowProduct(mockProduct);
+
+      // Create checkout item structure
+      const checkoutItem = {
+        product_id: mockProduct.product_id,
+        product: mockProduct,
+        quantity: quantity,
+        price: mockProduct.price,
+        total: mockProduct.price * quantity,
+      };
+
+      setCheckoutItems([checkoutItem]);
+      console.log('✅ Buy Now product loaded from mock data:', mockProduct.name);
+
+    } catch (error) {
+      console.error('❌ Error in Buy Now checkout:', error);
+      alert('Failed to load product. Redirecting to home...');
+      navigate('/');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchAddresses = async () => {
     try {
@@ -416,6 +568,16 @@ const Checkout = () => {
     });
   };
 
+  // Calculate total for checkout items
+  const calculateTotal = () => {
+    return checkoutItems.reduce((total, item) => {
+      const product = item.product || item;
+      const price = product.price || 0;
+      const quantity = item.quantity || 1;
+      return total + (price * quantity);
+    }, 0);
+  };
+
   const handleSubmit = async (e) => {
     if (e && e.preventDefault) {
       e.preventDefault();
@@ -424,6 +586,12 @@ const Checkout = () => {
     // Validate form data
     if (!formData.name || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.zipCode) {
       alert('Please fill in all required fields');
+      return;
+    }
+
+    // Validate checkout items
+    if (checkoutItems.length === 0) {
+      alert('No items to checkout');
       return;
     }
 
@@ -456,24 +624,49 @@ const Checkout = () => {
         }
       }
 
-      const cartId = cart?.cart_id || 'cart_current';
+      // Prepare order data based on checkout mode
+      let orderData;
 
-      const orderData = {
-        cart_id: cartId,
-        address_id: addressId,
-        payment_method: paymentMethod,
-        notes: formData.notes || '',
-        coupons: [], // Add coupons if any are applied
-        // Include contact info in case address creation failed
-        contact_info: {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          city: formData.city,
-          zipCode: formData.zipCode,
-        }
-      };
+      if (checkoutMode === 'buynow') {
+        // Buy Now mode - create order with single product
+        orderData = {
+          items: checkoutItems.map(item => ({
+            product_id: item.product_id || item.product?.product_id || item.product?.id,
+            quantity: item.quantity,
+            price: item.price || item.product?.price,
+          })),
+          address_id: addressId,
+          payment_method: paymentMethod,
+          notes: formData.notes || '',
+          coupons: [],
+          contact_info: {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            address: formData.address,
+            city: formData.city,
+            zipCode: formData.zipCode,
+          }
+        };
+      } else {
+        // Cart mode - use cart_id
+        const cartId = cart?.cart_id || 'cart_current';
+        orderData = {
+          cart_id: cartId,
+          address_id: addressId,
+          payment_method: paymentMethod,
+          notes: formData.notes || '',
+          coupons: [],
+          contact_info: {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            address: formData.address,
+            city: formData.city,
+            zipCode: formData.zipCode,
+          }
+        };
+      }
 
       let response;
 
@@ -495,7 +688,11 @@ const Checkout = () => {
 
         console.log('✅ COD order created:', responseData);
 
-        clearCart();
+        // Clear cart only if in cart mode
+        if (checkoutMode === 'cart') {
+          clearCart();
+        }
+
         alert(`Order placed successfully! Order ID: ${responseData.order_id}`);
         navigate(`/orders/${responseData.order_id}`);
       }
@@ -556,7 +753,10 @@ const Checkout = () => {
       console.log('✅ Payment verified:', responseData);
 
       if (responseData.payment_status === 'paid') {
-        clearCart();
+        // Clear cart only if in cart mode
+        if (checkoutMode === 'cart') {
+          clearCart();
+        }
         alert('Payment successful! Order confirmed.');
         navigate(`/orders/${orderId}`);
       } else {
@@ -573,15 +773,44 @@ const Checkout = () => {
     }
   };
 
-  if (cart.length === 0) {
-    navigate('/cart');
-    return null;
+  // Redirect if no items to checkout
+  if (checkoutItems.length === 0 && !loading) {
+    if (checkoutMode === 'buynow') {
+      // Buy Now mode but no product loaded - redirect to home
+      navigate('/');
+      return null;
+    } else {
+      // Cart mode but cart is empty - redirect to cart
+      navigate('/cart');
+      return null;
+    }
   }
 
   return (
     <div style={styles.checkoutPage}>
       <div style={styles.container}>
-        <h1 style={styles.pageTitle}>Checkout</h1>
+        <h1 style={styles.pageTitle}>
+          {checkoutMode === 'buynow' ? 'Buy Now - Checkout' : 'Checkout'}
+        </h1>
+
+        {/* Mode Indicator */}
+        {checkoutMode === 'buynow' && (
+          <div style={{
+            backgroundColor: '#FFF8F0',
+            border: '1px solid #FFA41C',
+            borderRadius: '8px',
+            padding: '12px 16px',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}>
+            <span style={{ fontSize: '16px' }}>⚡</span>
+            <span style={{ fontSize: '14px', color: '#0F1111' }}>
+              <strong>Express Checkout:</strong> You're purchasing {checkoutItems.length} item{checkoutItems.length > 1 ? 's' : ''} directly
+            </span>
+          </div>
+        )}
 
         <div style={styles.checkoutGrid}>
           {/* Main Content */}
@@ -811,13 +1040,13 @@ const Checkout = () => {
                     <div style={styles.qrCodeContainer}>
                       <h4 style={styles.qrCodeTitle}>Scan QR Code to Pay</h4>
                       <QRCodeSVG
-                        value={`upi://pay?pa=${upiId || 'merchant@upi'}&pn=Woodzon&am=${getCartTotal()}&cu=INR&tn=Order Payment`}
+                        value={`upi://pay?pa=${upiId || 'merchant@upi'}&pn=Woodzon&am=${calculateTotal()}&cu=INR&tn=Order Payment`}
                         size={200}
                         level="H"
                         marginSize={2}
                       />
                       <p style={styles.qrCodeSubtitle}>
-                        Scan with any UPI app to pay ₹{getCartTotal().toFixed(2)}
+                        Scan with any UPI app to pay ₹{calculateTotal().toFixed(2)}
                       </p>
                     </div>
                   )}
@@ -901,8 +1130,8 @@ const Checkout = () => {
               <h3 style={styles.summaryTitle}>Order Summary</h3>
 
               <div style={styles.summaryRow}>
-                <span>Items ({cart.length}):</span>
-                <span>₹{getCartTotal().toFixed(2)}</span>
+                <span>Items ({checkoutItems.length}):</span>
+                <span>₹{calculateTotal().toFixed(2)}</span>
               </div>
 
               <div style={styles.summaryRow}>
@@ -912,47 +1141,56 @@ const Checkout = () => {
 
               <div style={styles.summaryTotal}>
                 <span>Order Total:</span>
-                <span>₹{getCartTotal().toFixed(2)}</span>
+                <span>₹{calculateTotal().toFixed(2)}</span>
               </div>
 
               <div style={styles.summaryDivider}></div>
 
-              {/* Cart Items */}
-              {cart.map((item, index) => {
-                const productId = item.product?.product_id || item.product?.id;
+              {/* Checkout Items */}
+              {checkoutItems.map((item, index) => {
+                const product = item.product || item;
+                const productId = product.product_id || product.id;
+                const productName = product.name || product.product_name || 'Product';
+                const productImage = product.image || product.image_url || 'https://via.placeholder.com/80';
+                const productPrice = product.price || 0;
+
                 return (
                   <div
-                    key={productId}
+                    key={`${productId}-${index}`}
                     style={{
                       ...styles.summaryItem,
-                      ...(index === cart.length - 1 ? styles.summaryItemLast : {})
+                      ...(index === checkoutItems.length - 1 ? styles.summaryItemLast : {})
                     }}
                   >
-                    <img src={item.product.image} alt={item.product.name} style={styles.itemImage} />
+                    <img src={productImage} alt={productName} style={styles.itemImage} />
                     <div style={styles.itemDetails}>
-                      <p style={styles.itemName}>{item.product.name}</p>
-                      <div style={styles.quantityControls}>
-                        <button
-                          style={styles.quantityBtn}
-                          onClick={() => updateQuantity(productId, item.quantity - 1)}
-                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E3E6E6'}
-                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#F0F2F2'}
-                        >
-                          −
-                        </button>
-                        <span style={styles.quantityDisplay}>Qty: {item.quantity}</span>
-                        <button
-                          style={styles.quantityBtn}
-                          onClick={() => updateQuantity(productId, item.quantity + 1)}
-                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E3E6E6'}
-                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#F0F2F2'}
-                        >
-                          +
-                        </button>
-                      </div>
+                      <p style={styles.itemName}>{productName}</p>
+                      {checkoutMode === 'cart' ? (
+                        <div style={styles.quantityControls}>
+                          <button
+                            style={styles.quantityBtn}
+                            onClick={() => updateQuantity(productId, item.quantity - 1)}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E3E6E6'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#F0F2F2'}
+                          >
+                            −
+                          </button>
+                          <span style={styles.quantityDisplay}>Qty: {item.quantity}</span>
+                          <button
+                            style={styles.quantityBtn}
+                            onClick={() => updateQuantity(productId, item.quantity + 1)}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E3E6E6'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#F0F2F2'}
+                          >
+                            +
+                          </button>
+                        </div>
+                      ) : (
+                        <p style={styles.itemQty}>Qty: {item.quantity}</p>
+                      )}
                     </div>
                     <p style={styles.itemPrice}>
-                      ₹{(item.product.price * item.quantity).toFixed(2)}
+                      ₹{(productPrice * item.quantity).toFixed(2)}
                     </p>
                   </div>
                 );

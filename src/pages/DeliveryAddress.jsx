@@ -8,9 +8,15 @@ const DeliveryAddress = () => {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [deliveryMethod, setDeliveryMethod] = useState('standard');
+  const [checkoutMode, setCheckoutMode] = useState('cart');
 
   useEffect(() => {
     fetchAddresses();
+
+    // Get checkout mode from sessionStorage
+    const mode = sessionStorage.getItem('checkoutMode') || 'cart';
+    setCheckoutMode(mode);
+    console.log('🛒 Checkout mode:', mode);
   }, []);
 
   const fetchAddresses = async () => {
@@ -75,10 +81,22 @@ const DeliveryAddress = () => {
       <div style={styles.container}>
         {/* Header */}
         <div style={styles.header}>
-          <button style={styles.backBtn} onClick={() => navigate('/cart')}>
+          <button
+            style={styles.backBtn}
+            onClick={() => {
+              // Go back based on checkout mode
+              if (checkoutMode === 'buynow') {
+                navigate(-1); // Go back to product page
+              } else {
+                navigate('/cart');
+              }
+            }}
+          >
             <MdArrowBack />
           </button>
-          <h1 style={styles.headerTitle}>Delivery Address</h1>
+          <h1 style={styles.headerTitle}>
+            {checkoutMode === 'buynow' ? 'Buy Now - Delivery Address' : 'Delivery Address'}
+          </h1>
         </div>
 
         {/* Progress Indicator */}

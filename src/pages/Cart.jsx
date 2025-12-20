@@ -10,6 +10,10 @@ const Cart = () => {
   const [discount, setDiscount] = useState(0);
 
   const handleCheckout = () => {
+    // Store checkout mode in sessionStorage
+    sessionStorage.setItem('checkoutMode', 'cart');
+
+    // Navigate to delivery address selection
     navigate('/checkout/address');
   };
 

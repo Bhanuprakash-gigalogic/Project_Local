@@ -214,91 +214,63 @@ const OrderTracking = () => {
           return `${day} ${month}, ${displayHours}:${displayMinutes} ${ampm}`;
         };
 
-        // Build tracking steps based on order timeline
-        const trackingSteps = [];
-
-        // Step 1: Order Confirmed (immediately when order is placed)
-        trackingSteps.push({
-          title: 'Order Confirmed',
-          time: formatDateTime(orderDate),
-          location: '',
-          completed: true
-        });
-
         // Calculate time differences in hours
         const hoursSinceOrder = (now - orderDate) / (1000 * 60 * 60);
 
-        // Step 2: Packing Completed (2-4 hours after order)
+        // Calculate all stage times
         const packingTime = new Date(orderDate.getTime() + (2 * 60 * 60 * 1000)); // 2 hours later
-        if (hoursSinceOrder >= 2) {
-          trackingSteps.push({
-            title: 'Packing Completed',
-            time: formatDateTime(packingTime),
-            location: 'Seller Warehouse',
-            completed: true
-          });
-        }
-
-        // Step 3: Shipped (6-8 hours after order, or next day)
         const shippedTime = new Date(orderDate.getTime() + (6 * 60 * 60 * 1000)); // 6 hours later
-        if (hoursSinceOrder >= 6) {
-          trackingSteps.push({
-            title: 'Shipped',
-            time: formatDateTime(shippedTime),
-            location: 'In Transit',
-            completed: true
-          });
-        }
-
-        // Step 4: In Transit (12-24 hours after order)
         const inTransitTime = new Date(orderDate.getTime() + (12 * 60 * 60 * 1000)); // 12 hours later
-        if (hoursSinceOrder >= 12) {
-          trackingSteps.push({
-            title: 'In Transit',
-            time: formatDateTime(inTransitTime),
-            location: 'On the way to delivery hub',
-            completed: true
-          });
-        }
-
-        // Step 5: Out for Delivery (based on estimated delivery date)
         const estimatedDelivery = new Date(order.estimated_delivery);
         const outForDeliveryTime = new Date(estimatedDelivery);
         outForDeliveryTime.setHours(10, 0, 0, 0); // 10:00 AM on delivery day
-
-        if (now >= outForDeliveryTime) {
-          trackingSteps.push({
-            title: 'Out for Delivery',
-            time: formatDateTime(outForDeliveryTime),
-            location: order.address?.city || 'Your City',
-            completed: true
-          });
-        } else {
-          trackingSteps.push({
-            title: 'Out for Delivery',
-            time: '',
-            location: '',
-            completed: false
-          });
-        }
-
-        // Step 6: Delivered
         const deliveredTime = new Date(outForDeliveryTime.getTime() + (4 * 60 * 60 * 1000)); // 4 hours after out for delivery
-        if (now >= deliveredTime) {
-          trackingSteps.push({
-            title: 'Delivered',
-            time: formatDateTime(deliveredTime),
-            location: order.address?.city || 'Your City',
-            completed: true
-          });
-        } else {
-          trackingSteps.push({
-            title: 'Delivered',
-            time: '',
+
+        // Build ALL 6 tracking steps (always show all stages)
+        const trackingSteps = [
+          // Step 1: Order Confirmed (always completed)
+          {
+            title: 'Order Confirmed',
+            time: formatDateTime(orderDate),
             location: '',
-            completed: false
-          });
-        }
+            completed: true
+          },
+          // Step 2: Packing Completed
+          {
+            title: 'Packing Completed',
+            time: hoursSinceOrder >= 2 ? formatDateTime(packingTime) : '',
+            location: hoursSinceOrder >= 2 ? 'Seller Warehouse' : '',
+            completed: hoursSinceOrder >= 2
+          },
+          // Step 3: Shipped
+          {
+            title: 'Shipped',
+            time: hoursSinceOrder >= 6 ? formatDateTime(shippedTime) : '',
+            location: hoursSinceOrder >= 6 ? 'In Transit' : '',
+            completed: hoursSinceOrder >= 6
+          },
+          // Step 4: In Transit
+          {
+            title: 'In Transit',
+            time: hoursSinceOrder >= 12 ? formatDateTime(inTransitTime) : '',
+            location: hoursSinceOrder >= 12 ? 'On the way to delivery hub' : '',
+            completed: hoursSinceOrder >= 12
+          },
+          // Step 5: Out for Delivery
+          {
+            title: 'Out for Delivery',
+            time: now >= outForDeliveryTime ? formatDateTime(outForDeliveryTime) : '',
+            location: now >= outForDeliveryTime ? (order.address?.city || 'Your City') : '',
+            completed: now >= outForDeliveryTime
+          },
+          // Step 6: Delivered
+          {
+            title: 'Delivered',
+            time: now >= deliveredTime ? formatDateTime(deliveredTime) : '',
+            location: now >= deliveredTime ? (order.address?.city || 'Your City') : '',
+            completed: now >= deliveredTime
+          }
+        ];
 
         // Determine current status
         let currentStatus = 'confirmed';

@@ -10,8 +10,37 @@ const ReviewOrder = () => {
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState(null);
   const [payment, setPayment] = useState(null);
+  const [checkoutMode, setCheckoutMode] = useState('cart');
+  const [orderItems, setOrderItems] = useState([]);
+  const [orderTotal, setOrderTotal] = useState(0);
 
   useEffect(() => {
+    // Get checkout mode
+    const mode = sessionStorage.getItem('checkoutMode') || 'cart';
+    setCheckoutMode(mode);
+
+    // Load order items based on mode
+    if (mode === 'buynow') {
+      const buyNowProduct = sessionStorage.getItem('buyNowProduct');
+      if (buyNowProduct) {
+        const product = JSON.parse(buyNowProduct);
+        const quantity = product.quantity || 1;
+        const total = product.price * quantity;
+
+        setOrderItems([{
+          product_id: product.product_id || product.id,
+          product: product,
+          quantity: quantity,
+          price: product.price,
+          total: total,
+        }]);
+        setOrderTotal(total);
+      }
+    } else {
+      setOrderItems(cart);
+      setOrderTotal(getCartTotal());
+    }
+
     // Load selected address and payment from localStorage
     const addressId = localStorage.getItem('selectedAddressId');
     const savedAddress = localStorage.getItem('selectedAddress');
@@ -78,13 +107,29 @@ const ReviewOrder = () => {
       const addressId = localStorage.getItem('selectedAddressId');
       const deliveryMethod = localStorage.getItem('deliveryMethod');
 
-      const orderData = {
-        cart_id: cart?.cart_id || 'cart_current',
-        address_id: addressId,
-        payment_method: payment?.type || 'cod',
-        delivery_method: deliveryMethod || 'standard',
-        notes: '',
-      };
+      // Build order data based on checkout mode
+      let orderData;
+      if (checkoutMode === 'buynow') {
+        orderData = {
+          items: orderItems.map(item => ({
+            product_id: item.product_id || item.product?.product_id,
+            quantity: item.quantity,
+            price: item.price || item.product?.price,
+          })),
+          address_id: addressId,
+          payment_method: payment?.type || 'cod',
+          delivery_method: deliveryMethod || 'standard',
+          notes: '',
+        };
+      } else {
+        orderData = {
+          cart_id: cart?.cart_id || 'cart_current',
+          address_id: addressId,
+          payment_method: payment?.type || 'cod',
+          delivery_method: deliveryMethod || 'standard',
+          notes: '',
+        };
+      }
 
       let orderId;
 
@@ -120,13 +165,43 @@ const ReviewOrder = () => {
 
         const estimatedDeliveryDate = getBusinessDate(deliveryDays);
 
-        // Create tracking timeline with realistic timestamps
+        // Create complete tracking timeline with all 6 stages
         const trackingTimeline = [
           {
             status: 'Order Confirmed',
             timestamp: orderDate.toISOString(),
             completed: true,
             description: 'Your order has been confirmed and is being processed'
+          },
+          {
+            status: 'Packing Completed',
+            timestamp: '',
+            completed: false,
+            description: 'Your order is being packed at the warehouse'
+          },
+          {
+            status: 'Shipped',
+            timestamp: '',
+            completed: false,
+            description: 'Your order has been shipped'
+          },
+          {
+            status: 'In Transit',
+            timestamp: '',
+            completed: false,
+            description: 'Your order is on the way to delivery hub'
+          },
+          {
+            status: 'Out for Delivery',
+            timestamp: '',
+            completed: false,
+            description: 'Your order is out for delivery'
+          },
+          {
+            status: 'Delivered',
+            timestamp: '',
+            completed: false,
+            description: 'Your order has been delivered'
           }
         ];
 
@@ -135,8 +210,8 @@ const ReviewOrder = () => {
         const newOrder = {
           order_id: orderId,
           ...orderData,
-          items: cart?.items || cart || [],
-          total: getCartTotal(),
+          items: orderItems,
+          total: orderTotal,
           status: 'confirmed',
           created_at: orderDate.toISOString(),
           order_date: orderDate.toISOString(),
@@ -163,12 +238,18 @@ const ReviewOrder = () => {
         orderId = responseData.order_id;
       }
 
-      // Clear cart and navigate to success page
-      clearCart();
+      // Clear cart only in cart mode (not in buy now mode)
+      if (checkoutMode === 'cart') {
+        clearCart();
+      }
+
+      // Clear checkout data
       localStorage.removeItem('selectedAddressId');
       localStorage.removeItem('selectedAddress');
       localStorage.removeItem('selectedPayment');
       localStorage.removeItem('deliveryMethod');
+      sessionStorage.removeItem('checkoutMode');
+      sessionStorage.removeItem('buyNowProduct');
 
       console.log('✅ Order placed successfully! Order ID:', orderId);
       navigate('/order-confirmed', { state: { orderId: orderId } });
@@ -192,7 +273,9 @@ const ReviewOrder = () => {
           <button style={styles.backBtn} onClick={() => navigate('/checkout/payment')}>
             <MdArrowBack />
           </button>
-          <h1 style={styles.headerTitle}>Review Your Order</h1>
+          <h1 style={styles.headerTitle}>
+            {checkoutMode === 'buynow' ? 'Buy Now - Review Order' : 'Review Your Order'}
+          </h1>
         </div>
 
         {/* Progress Tabs */}
@@ -260,23 +343,26 @@ const ReviewOrder = () => {
 
           {/* Items Section */}
           <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>Items ({cart.length})</h2>
-            {cart.map((item) => (
-              <div key={item.product.product_id || item.product.id} style={styles.itemCard}>
-                <img 
-                  src={item.product.image} 
-                  alt={item.product.name} 
+            <h2 style={styles.sectionTitle}>Items ({orderItems.length})</h2>
+            {orderItems.map((item) => {
+              const product = item.product || item;
+              return (
+              <div key={product.product_id || product.id} style={styles.itemCard}>
+                <img
+                  src={product.image}
+                  alt={product.name}
                   style={styles.itemImage}
                 />
                 <div style={styles.itemInfo}>
-                  <h3 style={styles.itemName}>{item.product?.name || 'Product'}</h3>
+                  <h3 style={styles.itemName}>{product.name || 'Product'}</h3>
                   <p style={styles.itemQty}>Qty: {item.quantity || 1}</p>
                 </div>
                 <div style={styles.itemPrice}>
-                  ₹{(Number(item.product?.price || 0) * Number(item.quantity || 1)).toLocaleString('en-IN')}
+                  ₹{(Number(product.price || 0) * Number(item.quantity || 1)).toLocaleString('en-IN')}
                 </div>
               </div>
-            ))}
+            );
+            })}
           </div>
 
           {/* Order Totals */}
@@ -285,7 +371,7 @@ const ReviewOrder = () => {
             <div style={styles.totalsCard}>
               <div style={styles.totalRow}>
                 <span>Subtotal</span>
-                <span>₹{Number(getCartTotal() || 0).toLocaleString('en-IN')}</span>
+                <span>₹{Number(orderTotal || 0).toLocaleString('en-IN')}</span>
               </div>
               <div style={styles.totalRow}>
                 <span>Shipping</span>
@@ -293,11 +379,11 @@ const ReviewOrder = () => {
               </div>
               <div style={styles.totalRow}>
                 <span>Taxes</span>
-                <span>₹{Number((getCartTotal() || 0) * 0.18).toLocaleString('en-IN')}</span>
+                <span>₹{Number((orderTotal || 0) * 0.18).toLocaleString('en-IN')}</span>
               </div>
               <div style={{...styles.totalRow, ...styles.totalRowFinal}}>
                 <span>Total</span>
-                <span>₹{Number((getCartTotal() || 0) + 50 + ((getCartTotal() || 0) * 0.18)).toLocaleString('en-IN')}</span>
+                <span>₹{Number((orderTotal || 0) + 50 + ((orderTotal || 0) * 0.18)).toLocaleString('en-IN')}</span>
               </div>
             </div>
           </div>
