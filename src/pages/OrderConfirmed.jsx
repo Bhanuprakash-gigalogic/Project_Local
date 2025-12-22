@@ -160,7 +160,7 @@ const OrderConfirmed = () => {
 
 const styles = {
   page: {
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#F5F0E8',
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',

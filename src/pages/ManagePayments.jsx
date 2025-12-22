@@ -128,7 +128,7 @@ const ManagePayments = () => {
 
 const styles = {
   page: {
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#F5F0E8',
     minHeight: '100vh',
     paddingBottom: '40px',
   },

@@ -8,7 +8,7 @@ import { mockProducts } from '../data/mockData';
 // Inline Styles
 const styles = {
   checkoutPage: {
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#F5F0E8',
     minHeight: '100vh',
     padding: '20px 0',
   },

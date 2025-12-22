@@ -3,8 +3,10 @@ import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { AuthProvider } from './context/AuthContext';
 import { ZoneProvider } from './context/ZoneContext';
+import { NotificationsProvider } from './context/NotificationsContext';
 import { initializeMockAddresses } from './utils/mockData';
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 // Initialize mock data for testing
 initializeMockAddresses();
@@ -40,6 +42,12 @@ import Sellers from './pages/Sellers';
 import SellerStore from './pages/SellerStore';
 import Reviews from './pages/Reviews';
 import WriteReview from './pages/WriteReview';
+import Notifications from './pages/Notifications';
+import HelpSupport from './pages/HelpSupport';
+import SupportTickets from './pages/SupportTickets';
+import TicketDetail from './pages/TicketDetail';
+import CreateTicket from './pages/CreateTicket';
+import LiveChat from './pages/LiveChat';
 
 function App() {
   return (
@@ -48,9 +56,10 @@ function App() {
         <ZoneProvider>
           <CartProvider>
             <WishlistProvider>
-              <div className="App">
-                <Header />
-                <Routes>
+              <NotificationsProvider>
+                <div className="App">
+                  <Header />
+                  <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/categories" element={<Categories />} />
                   <Route path="/categories/living" element={<LivingCategory />} />
@@ -84,8 +93,16 @@ function App() {
                   <Route path="/seller/:id" element={<SellerStore />} />
                   <Route path="/reviews" element={<Reviews />} />
                   <Route path="/write-review" element={<WriteReview />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                  <Route path="/support" element={<HelpSupport />} />
+                  <Route path="/support/chat" element={<LiveChat />} />
+                  <Route path="/support/tickets" element={<SupportTickets />} />
+                  <Route path="/support/tickets/new" element={<CreateTicket />} />
+                  <Route path="/support/tickets/:id" element={<TicketDetail />} />
                 </Routes>
+                <Footer />
               </div>
+              </NotificationsProvider>
             </WishlistProvider>
           </CartProvider>
         </ZoneProvider>

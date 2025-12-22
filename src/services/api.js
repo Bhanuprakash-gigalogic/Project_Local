@@ -230,6 +230,57 @@ export const reviewsAPI = {
 };
 
 // ============================================
+// 🔔 NOTIFICATIONS (Requires Auth)
+// ============================================
+export const notificationsAPI = {
+  getNotifications: (params) => api.get(`/notifications`, { params }),
+  getUnreadCount: () => api.get(`/notifications/unread-count`),
+  markAsRead: (notificationId) => api.put(`/notifications/${notificationId}/read`),
+  markAllAsRead: () => api.put(`/notifications/mark-all-read`),
+  deleteNotification: (notificationId) => api.delete(`/notifications/${notificationId}`),
+  getNotificationSettings: () => api.get(`/notifications/settings`),
+  updateNotificationSettings: (settings) => api.put(`/notifications/settings`, settings),
+};
+
+// ============================================
+// 🆘 HELP & SUPPORT (Requires Auth)
+// ============================================
+export const supportAPI = {
+  // FAQ
+  getFAQs: (params) => api.get(`/support/faqs`, { params }),
+  searchFAQs: (query) => api.get(`/support/faqs/search`, { params: { q: query } }),
+
+  // Support Tickets
+  getTickets: (params) => api.get(`/support/tickets`, { params }),
+  getTicketById: (ticketId) => api.get(`/support/tickets/${ticketId}`),
+  createTicket: (ticketData) => {
+    if (ticketData instanceof FormData) {
+      return api.post(`/support/tickets`, ticketData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    }
+    return api.post(`/support/tickets`, ticketData);
+  },
+  addTicketMessage: (ticketId, messageData) => {
+    if (messageData instanceof FormData) {
+      return api.post(`/support/tickets/${ticketId}/messages`, messageData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    }
+    return api.post(`/support/tickets/${ticketId}/messages`, messageData);
+  },
+  closeTicket: (ticketId) => api.put(`/support/tickets/${ticketId}/close`),
+  reopenTicket: (ticketId) => api.put(`/support/tickets/${ticketId}/reopen`),
+  rateTicket: (ticketId, rating, feedback) => api.post(`/support/tickets/${ticketId}/rate`, { rating, feedback }),
+
+  // Live Chat
+  initiateLiveChat: () => api.post(`/support/chat/initiate`),
+  getChatHistory: (chatId) => api.get(`/support/chat/${chatId}/history`),
+  sendChatMessage: (chatId, message) => api.post(`/support/chat/${chatId}/message`, { message }),
+  endChat: (chatId) => api.post(`/support/chat/${chatId}/end`),
+
+  // Contact
+  getContactInfo: () => api.get(`/support/contact-info`),
+  submitContactForm: (formData) => api.post(`/support/contact`, formData),
+};
+
+// ============================================
 // 🛠️ HELPER: Safe API Call with Mock Fallback
 // ============================================
 /**

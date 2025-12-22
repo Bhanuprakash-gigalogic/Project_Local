@@ -220,7 +220,7 @@ const OrderDetails = () => {
 const styles = {
   page: {
     minHeight: '100vh',
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#F5F0E8',
     paddingTop: '80px',
     paddingBottom: '40px',
   },

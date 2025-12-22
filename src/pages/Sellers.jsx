@@ -7,7 +7,7 @@ import { mockSellers } from '../data/mockData';
 // Inline Styles - Matching Home page Top Sellers layout
 const styles = {
   sellersPage: {
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#F5F0E8',
     minHeight: '100vh',
     paddingTop: '20px',
     paddingBottom: '40px',

@@ -197,7 +197,7 @@ const Cart = () => {
 // Modern Clean Cart Styles
 const styles = {
   cartPage: {
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#F5F0E8',
     minHeight: '100vh',
     padding: '0',
   },

@@ -7,7 +7,7 @@ import ProductCard from '../components/ProductCard';
 // Inline Styles - Matching Home page "Featured For You" layout
 const styles = {
   sellerStorePage: {
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#F5F0E8',
     minHeight: '100vh',
     paddingTop: '20px',
     paddingBottom: '40px',

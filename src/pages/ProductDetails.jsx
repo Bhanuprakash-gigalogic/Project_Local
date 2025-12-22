@@ -10,7 +10,7 @@ import { MdFavoriteBorder, MdFavorite } from 'react-icons/md';
 // Inline Styles for Amazon-style Product Details
 const styles = {
   productPage: {
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#F5F0E8',
     minHeight: '100vh',
     padding: '20px 0',
   },

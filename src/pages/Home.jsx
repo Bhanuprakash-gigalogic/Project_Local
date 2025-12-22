@@ -8,7 +8,7 @@ import ProductCard from '../components/ProductCard';
 // Inline Styles
 const styles = {
   homePage: {
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#F5F0E8',
   },
   loading: {
     display: 'flex',
@@ -21,7 +21,7 @@ const styles = {
   loadingSpinner: {
     width: '50px',
     height: '50px',
-    border: '4px solid #E0E0E0',
+    border: '4px solid #F5F0E8',
     borderTopColor: '#8B4513',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
